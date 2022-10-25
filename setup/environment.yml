@@ -1,0 +1,13 @@
+name: milton_maps
+dependencies:
+  - ca-certificates>=2021.1.19
+  - certifi>=2020.12.5
+  - ipykernal>=5.1.4
+  - pandas>=1.0.3
+  - pip>=20.0.2
+  - python=3
+  - scipy>=1.4.1
+  - setuptools>=47.1.1
+  - wheel>=0.34.2
+  - pip:
+    - -r file:../requirement.txt

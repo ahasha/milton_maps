@@ -1,0 +1,23 @@
+name: milton-maps
+channels:
+  - conda-forge
+dependencies:
+  - dvc
+  - dvc-gdrive
+  - fiona
+  - folium
+  - gdal
+  - geopandas
+  - ipykernel
+  - ipython
+  - ipywidgets
+  - jupyter
+  - mamba
+  - matplotlib
+  - numpy
+  - pandas
+  - pandas-profiling
+  - pygeos
+  - scikit-learn
+  - scipy
+  - seaborn
