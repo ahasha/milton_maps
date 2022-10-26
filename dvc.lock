@@ -1,14 +1,15 @@
 schema: '2.0'
 stages:
   process_town_boundaries:
-    cmd: python milton_maps/process_town_boundaries.py
+    cmd: milton_maps process_town_boundaries data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
+      data/processed/town_boundaries.shp.zip
     deps:
     - path: data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
       md5: 331b2ee589890a213b4177f52faf29c3
       size: 10503656
     - path: milton_maps/process_town_boundaries.py
-      md5: 5ba05ea71907346de8931973016814f4
-      size: 1851
+      md5: e91b7d30bede5da957dc43229c98f8bd
+      size: 2513
     outs:
     - path: data/processed/town_boundaries.shp.zip
       md5: bebdc2220d57a4448b65898296b16895

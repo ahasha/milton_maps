@@ -1,6 +1,6 @@
 stages:
   process_town_boundaries:
-    cmd: python milton_maps/process_town_boundaries.py
+    cmd: milton_maps process_town_boundaries data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp data/processed/town_boundaries.shp.zip
     deps:
       - milton_maps/process_town_boundaries.py
       - data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp

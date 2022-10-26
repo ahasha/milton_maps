@@ -1,19 +1,27 @@
+"""Usage: milton_maps process_town_boundaries INPUT OUTPUT
+
+Arguments:
+  INPUT       path to GDB file containing assessor DB
+  OUTPUT      output path to write processed Assessor DB as a pickled dataframe
+"""
+import sys
+from docopt import docopt
 import geopandas as gpd
 from shapely.geometry import MultiPolygon
 
-def process_town_boundaries():
+def process_town_boundaries(input_path, output_path):
 
-    towns = gpd.read_file("data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp")
+    towns = gpd.read_file(input_path)
     print(f"There are {towns.TOWN_ID.nunique()} unique towns in the dataset, but the dataframe has shape {towns.shape}, so there are multiple rows per town")
 
     # The raw dataset contains one row for each disconnected region of a town. For our purposes, we want to merge these into a single multipolygon per town
     town_boundaries_series = towns.groupby("TOWN_ID")['geometry'].agg(lambda x: MultiPolygon(list(x)))
     town_attributes = towns.set_index("TOWN_ID").loc[:, towns.groupby("TOWN_ID").nunique().max()==1].drop_duplicates()
 
-    #There are 351 towns in Massachusetts.  Verify this
+    # There are 351 towns in Massachusetts.  Verify this
     assert town_attributes.shape[0]==351
 
-    #Join multipolygon boundaries to attribute dataframe
+    # Join multipolygon boundaries to attribute dataframe
     town_boundaries = gpd.GeoDataFrame(town_boundaries_series).merge(town_attributes, left_index=True, right_index=True).set_crs(towns.crs)
     town_boundaries['SHAPE_AREA'] = town_boundaries['geometry'].area  #Square Meters
     town_boundaries['ACRES'] = town_boundaries['SHAPE_AREA'] / 4046.86 # Square meters per acre
@@ -21,15 +29,27 @@ def process_town_boundaries():
 
     # Sanity checks
 
-    #The Multipolygon's areas should very closely match the sum of shapefile areas over each TOWN_ID
+    # The Multipolygon's areas should very closely match the sum of shapefile areas over each TOWN_ID
     direct_sum_old_areas = towns.groupby("TOWN_ID")['SHAPE_AREA'].sum()
     assert (town_boundaries['SHAPE_AREA']- direct_sum_old_areas ).divide(direct_sum_old_areas).max() < 1e-9
 
     #We should have one row per town and 19 columns
     assert town_boundaries.shape == (351,19)
 
-    town_boundaries.to_file("data/processed/town_boundaries.shp.zip", driver='ESRI Shapefile')
+    town_boundaries.to_file(output_path, driver='ESRI Shapefile')
+
+def main(argv):
+    """Console script for processing assessor DB"""
+    arguments = docopt(__doc__, argv)
+    if arguments['INPUT'][-3:].lower() != "shp":
+        raise ValueError(f"Input file must be a SHP file, got {arguments['INPUT']}")
+    output_file = arguments['OUTPUT']
+    if arguments['OUTPUT'][-3:].lower() != "zip":
+        output_file += "zip"
+    process_town_boundaries(arguments['INPUT'], output_file)
 
 
 if __name__ == "__main__":
-    process_town_boundaries()
+    argv = sys.argv
+    sys.exit(main(argv))  # pragma: no cover
+
