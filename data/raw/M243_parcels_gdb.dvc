@@ -1,0 +1,5 @@
+outs:
+- md5: 6d42e56fd4b1c9133a753abc0cbf5538.dir
+  size: 28913098
+  nfiles: 98
+  path: M243_parcels_gdb

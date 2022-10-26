@@ -4,6 +4,7 @@ channels:
 dependencies:
   - dvc
   - dvc-gdrive
+  - docopt
   - fiona
   - folium
   - gdal

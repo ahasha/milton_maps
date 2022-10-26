@@ -86,3 +86,40 @@ dist: clean ## builds source and wheel package
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
+
+clean-data:
+	rm -rf data/raw/openspace
+	rm -rf data/raw/L3_SHP_M189_MILTON
+	rm -rf data/raw/M189_parcels_gdb
+	rm -rf data/raw/L3_SHP_M243_QUINCY
+	rm -rf data/raw/M243_parcels_gdb
+
+refresh-openspace-data:
+	rm -rf data/raw/openspace
+	curl -o data/raw/openspace.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/openspace.zip
+	unzip data/raw/openspace.zip -d data/raw/openspace
+	rm data/raw/openspace.zip
+
+refresh-propertytax-data:
+	rm -rf data/raw/L3_SHP_M189_MILTON
+	rm -rf data/raw/M189_parcels_gdb
+	rm -rf data/raw/L3_SHP_M243_QUINCY
+	rm -rf data/raw/M243_parcels_gdb
+	curl -o data/raw/L3_SHP_M189_MILTON.zip http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M189_MILTON.zip
+	curl -o data/raw/L3_SHP_M243_QUINCY.zip http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M243_QUINCY.zip
+	curl -o data/raw/M189_parcels_gdb.zip http://download.massgis.digital.mass.gov/gdbs/l3parcels/M189_parcels_gdb.zip
+	curl -o data/raw/M243_parcels_gdb.zip http://download.massgis.digital.mass.gov/gdbs/l3parcels/M243_parcels_gdb.zip
+	unzip data/raw/L3_SHP_M189_MILTON.zip -d data/raw/L3_SHP_M189_MILTON
+	unzip data/raw/M189_parcels_gdb.zip -d data/raw/M189_parcels_gdb
+	unzip data/raw/L3_SHP_M243_QUINCY.zip -d data/raw/L3_SHP_M243_QUINCY
+	unzip data/raw/M243_parcels_gdb.zip -d data/raw/M243_parcels_gdb
+	rm data/raw/L3_SHP_M189_MILTON.zip
+	rm data/raw/M189_parcels_gdb.zip
+	rm data/raw/L3_SHP_M243_QUINCY.zip
+	rm data/raw/M243_parcels_gdb.zip
+
+refresh-municipal-boundary-data:
+	rm -rf data/raw/townssurvey_shp
+	curl -o data/raw/townssurvey_shp.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/townssurvey_shp.zip
+	unzip data/raw/townssurvey_shp.zip -d data/raw/townssurvey_shp
+	rm data/raw/townssurvey_shp.zip
