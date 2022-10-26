@@ -1,9 +1,40 @@
-import pandas as pd
 import geopandas as gpd
 import matplotlib
-import matplotlib.pyplot as plt
+import matplotlib.pyplot  as plt
+import pandas as pd
+
 from typing import Tuple
 import warnings
+
+# Use codes as defined by the [codebook](https://www.mass.gov/files/documents/2016/08/wr/classificationcodebook.pdf)
+USE_CODES = {
+    '101': "Single Family",
+    '102': "Condominium",
+    '103': "Mobile Home",
+    '104': "Two-Family",
+    '105': "Three-Family",
+    '106': "Accessory Land with Improvement - garage,etc.",
+    '109': "Multiple Houses on one parcel (for example, a single and a two-family on one parcel)",
+    '132': "Undevelopable Land",
+    '930': "Municipal, Vacant, Selectmen or City Council",
+    '130': "Vacant Land in a Residential Zone or Accessory to Residential Parcel, Developable Land",
+    '343': "Office Building", #There is no code 343 in the cited reference, but prefix 34 indicates office buildings.
+    '131': "Vacant Land in a Residential Zone or Accessory to Residential Parcel, Potentially Developable Land",
+    '945': "Educational Private, Affilliated Housing",
+    '942': "Educational Private, College or University",
+    '920': "Department of Conservation and Recreation, Division of Urban Parks and Recreation",
+    '340': "General Office Buildings",
+    '931': "Municipal, Improved, Selectmen or City Council",
+    '960': "Church, Mosque, Synagogue, Temple, etc",
+    '325': "Small Retail and Services stores (under 10,000 sq. ft.)",
+    '337': "Parking Lots - a commercial open parking lot for motor vehicles",
+    '932': "Municipal, Vacant, Conservation",
+    '013': "Multiple-Use, primarily Residential",
+    '031': "Multiple-Use, primarily Commercial",
+    '950': "Charitable, Vacant, Conservation Organizations"
+}
+
+RESIDENTIAL_USE_CODES = ['101', '102', '103', '104', '105', '109', '013']
 
 def plot_map(gdf: gpd.GeoDataFrame,
              column: str,
@@ -14,7 +45,10 @@ def plot_map(gdf: gpd.GeoDataFrame,
              markersize: float=0.01,
              legend: bool=True,
              title: str=None,
-             cmap: str='gist_earth') -> matplotlib.axes._subplots.AxesSubplot:
+             cmap: str='gist_earth',
+             fig=None,
+             ax=None,
+             **style_kwds):
     """Generic function to plot maps from GeoDataFrame.
 
     Args:
@@ -38,6 +72,7 @@ def plot_map(gdf: gpd.GeoDataFrame,
         cmap (str): the color map to use in the map plot. Defaults to ``'gist_earth'``. The color
             maps available in matplotlib can be found here:
             https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
+        ax:
 
     Returns:
         matplotlib.axes._subplots.AxesSubplot: matplotlib plot.
@@ -49,9 +84,10 @@ def plot_map(gdf: gpd.GeoDataFrame,
     if units != 'm':
         raise ValueError(f'coordinate units can only be meters (m). Instead, the crs was: {gdf.crs.to_dict()}')
 
-    fig, ax = plt.subplots(1, figsize=figsize)
+    if not ax:
+        fig, ax = plt.subplots(1, figsize=figsize)
     ax.grid()
-    gdf.plot(ax=ax, column=column, categorical=categorical, legend=legend, markersize=markersize, cmap=cmap)
+    gdf.plot(ax=ax, column=column, categorical=categorical, legend=legend, markersize=markersize, cmap=cmap, **style_kwds)
 
     # Shrink current axis by `axis_scale`
     box = ax.get_position()
@@ -90,4 +126,3 @@ def make_choropleth_style_function(df: pd.DataFrame,
         }
 
     return stylefunc, colormap_dict
-

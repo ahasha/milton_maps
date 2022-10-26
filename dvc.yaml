@@ -6,3 +6,17 @@ stages:
       - data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
     outs:
       - data/processed/town_boundaries.shp.zip
+  process_milton_assessor_db:
+    cmd: milton_maps process_assessor_db data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb M189Assess data/processed/milton_assessor_db.pkl
+    deps:
+      - milton_maps/process_assessor_db.py
+      - data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
+    outs:
+      - data/processed/milton_assessor_db.pkl
+  process_quincy_assessor_db:
+    cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb M243Assess data/processed/quincy_assessor_db.pkl
+    deps:
+      - milton_maps/process_assessor_db.py
+      - data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
+    outs:
+      - data/processed/quincy_assessor_db.pkl

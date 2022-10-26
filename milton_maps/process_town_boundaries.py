@@ -4,6 +4,7 @@ from shapely.geometry import MultiPolygon
 def process_town_boundaries():
 
     towns = gpd.read_file("data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp")
+    print(f"There are {towns.TOWN_ID.nunique()} unique towns in the dataset, but the dataframe has shape {towns.shape}, so there are multiple rows per town")
 
     # The raw dataset contains one row for each disconnected region of a town. For our purposes, we want to merge these into a single multipolygon per town
     town_boundaries_series = towns.groupby("TOWN_ID")['geometry'].agg(lambda x: MultiPolygon(list(x)))

@@ -7,9 +7,39 @@ stages:
       md5: 331b2ee589890a213b4177f52faf29c3
       size: 10503656
     - path: milton_maps/process_town_boundaries.py
-      md5: 2d99db60e0de4646c9001c849b4eafa4
-      size: 1693
+      md5: 5ba05ea71907346de8931973016814f4
+      size: 1851
     outs:
     - path: data/processed/town_boundaries.shp.zip
       md5: bebdc2220d57a4448b65898296b16895
       size: 3996108
+  process_milton_assessor_db:
+    cmd: milton_maps process_assessor_db data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
+      M189Assess data/processed/milton_assessor_db.pkl
+    deps:
+    - path: data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
+      md5: 857ede6cd9f785d8e60ca2b0c071767b.dir
+      size: 11740324
+      nfiles: 104
+    - path: milton_maps/process_assessor_db.py
+      md5: 5ae4d6c4d249757177c8e322481fdef3
+      size: 1680
+    outs:
+    - path: data/processed/milton_assessor_db.pkl
+      md5: a2b506c2b7f91c51c31b2e315585bd61
+      size: 3960358
+  process_quincy_assessor_db:
+    cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
+      M243Assess data/processed/quincy_assessor_db.pkl
+    deps:
+    - path: data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
+      md5: 50784f8bad42fa83e5c94f269a0803a5.dir
+      size: 28882890
+      nfiles: 97
+    - path: milton_maps/process_assessor_db.py
+      md5: 5ae4d6c4d249757177c8e322481fdef3
+      size: 1680
+    outs:
+    - path: data/processed/quincy_assessor_db.pkl
+      md5: 48a34121d79a615e3b34deb6d2fd9722
+      size: 12391739
