@@ -28,7 +28,7 @@ def process_assessor_db(input_path, layer, output_path):
     except DriverError:
         raise ValueError(f"{input_path} does not exist")
 
-    #Append convenience fields
+    #Append human-readable fields
     assessor_df['USE_DESCRIPTION'] = assessor_df['USE_CODE'].map(use_codes_map)
     assessor_df['IS_RESIDENTIAL'] = assessor_df['USE_CODE'].isin(mm.RESIDENTIAL_USE_CODES)
 

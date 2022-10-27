@@ -20,3 +20,10 @@ stages:
       - data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
     outs:
       - data/processed/quincy_assessor_db.pkl
+  process_openspace:
+    cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.pkl
+    deps:
+      - milton_maps/process_openspace.py
+      - data/raw/openspace/OPENSPACE_POLY.shp
+    outs:
+      - data/processed/openspace.pkl

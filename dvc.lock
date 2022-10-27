@@ -8,11 +8,11 @@ stages:
       md5: 331b2ee589890a213b4177f52faf29c3
       size: 10503656
     - path: milton_maps/process_town_boundaries.py
-      md5: e91b7d30bede5da957dc43229c98f8bd
-      size: 2513
+      md5: a47314747f5017d50a87fd3a7ce80b4f
+      size: 2546
     outs:
     - path: data/processed/town_boundaries.shp.zip
-      md5: bebdc2220d57a4448b65898296b16895
+      md5: af0cbc409f2622403e566ac3add87fe5
       size: 3996108
   process_milton_assessor_db:
     cmd: milton_maps process_assessor_db data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
@@ -23,8 +23,8 @@ stages:
       size: 11740324
       nfiles: 104
     - path: milton_maps/process_assessor_db.py
-      md5: 5ae4d6c4d249757177c8e322481fdef3
-      size: 1680
+      md5: 9009d0ce1fdba1fc9f449b782485dea1
+      size: 1683
     outs:
     - path: data/processed/milton_assessor_db.pkl
       md5: a2b506c2b7f91c51c31b2e315585bd61
@@ -38,9 +38,22 @@ stages:
       size: 28882890
       nfiles: 97
     - path: milton_maps/process_assessor_db.py
-      md5: 5ae4d6c4d249757177c8e322481fdef3
-      size: 1680
+      md5: 9009d0ce1fdba1fc9f449b782485dea1
+      size: 1683
     outs:
     - path: data/processed/quincy_assessor_db.pkl
       md5: 48a34121d79a615e3b34deb6d2fd9722
       size: 12391739
+  process_openspace:
+    cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.pkl
+    deps:
+    - path: data/raw/openspace/OPENSPACE_POLY.shp
+      md5: 1c7a6bd1e839d56935931f09cae6ad92
+      size: 58151620
+    - path: milton_maps/process_openspace.py
+      md5: 4da62d8b8524272f41e9a845be78d087
+      size: 1265
+    outs:
+    - path: data/processed/openspace.pkl
+      md5: d9132bde6ed8a67aaf78fdf6e311b8fc
+      size: 100727064

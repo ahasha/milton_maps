@@ -2,6 +2,7 @@ import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot  as plt
 import pandas as pd
+from IPython.display import Markdown
 
 from typing import Tuple
 import warnings
@@ -35,6 +36,36 @@ USE_CODES = {
 }
 
 RESIDENTIAL_USE_CODES = ['101', '102', '103', '104', '105', '109', '013']
+
+PUBLIC_ACCESS_CODES = {
+    "Y": "Yes (open to public)",
+    "N": "No (not open to public)",
+    "L": "Limited (membership only)",
+    "X": "Unknown",
+}
+
+LEVEL_OF_PROTECTION_CODES = {
+    "P": "In Perpetuity",
+    "T": "Temporary",
+    "L": "Limited",
+    "N": "None",
+}
+
+PRIMARY_PURPOSE_CODES = {
+    "R": "Recreation (activities are facility based)",
+    "C": "Conservation (activities are non-facility based)",
+    "B": "Recreation and Conservation",
+    "H": "Historical/Cultural",
+    "A": "Agricultural",
+    "W": "Water Supply Protection",
+    "S": "Scenic (official designation only)",
+    "F": "Flood Control",
+    "U": "Site is underwater",
+    "O": "Other (explain)",
+    "X": "Unknown"
+}
+
+
 
 def plot_map(gdf: gpd.GeoDataFrame,
              column: str,
@@ -126,3 +157,16 @@ def make_choropleth_style_function(df: pd.DataFrame,
         }
 
     return stylefunc, colormap_dict
+
+def html_legend(cmap_dict):
+    table_html = """<table>
+  <tr>
+    <th>Value</th>
+    <th>Color</th>
+  </tr>
+""" + "\n".join(
+        f'<tr><td><span style="font-family: monospace">{code}</span></td> <td><span style="color: {color}">████████</span></td></tr>'
+        for code, color in cmap_dict.items()
+    ) + "</table>"
+
+    return table_html
