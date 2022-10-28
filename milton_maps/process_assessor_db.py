@@ -9,16 +9,9 @@ import sys
 from docopt import docopt
 import geopandas as gpd
 import joblib
+import json
 import milton_maps as mm
 from fiona.errors import DriverError
-
-def use_codes_map(use_code):
-    try:
-        use_description = mm.USE_CODES[use_code]
-    except KeyError:
-        use_description = "Other"
-
-    return use_description
 
 def process_assessor_db(input_path, layer, output_path):
     try:
@@ -28,12 +21,25 @@ def process_assessor_db(input_path, layer, output_path):
     except DriverError:
         raise ValueError(f"{input_path} does not exist")
 
+    # LOC_ID is globally unique, but is sometimes missing.  TOWN_ID + PROP_ID is guaranteed to be unique,
+    # so we replace LOC_ID with the combination of those two fields when missting.
+    assessor_df.index = assessor_df.LOC_ID.fillna(assessor_df.TOWN_ID.astype(str) + assessor_df.PROP_ID)
+
+    #Clean up multiple spaces in site address field
+    assessor_df['SITE_ADDR'] = assessor_df['SITE_ADDR'].str.split().str.join(' ')
+
     #Append human-readable fields
-    assessor_df['USE_DESCRIPTION'] = assessor_df['USE_CODE'].map(use_codes_map)
-    assessor_df['IS_RESIDENTIAL'] = assessor_df['USE_CODE'].isin(mm.RESIDENTIAL_USE_CODES)
+    assessor_df['USE_DESCRIPTION'] = mm.transform_use_codes(assessor_df.USE_CODE)
+    assessor_df['IS_RESIDENTIAL'] = assessor_df['USE_CODE'].str[:3].isin(mm.RESIDENTIAL_USE_CODES)
+
+    with open("data/processed/town_ids.json", 'r') as f:
+        town_ids_map = json.load(f)
+
+    assessor_df['TOWN'] = assessor_df['TOWN_ID'].astype(str).map(town_ids_map)
+    # Check all IDs were mapped
+    assert not assessor_df['TOWN'].isnull().values.any()
 
     joblib.dump(assessor_df, output_path)
-
 
 
 def main(argv):

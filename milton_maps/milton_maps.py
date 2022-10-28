@@ -8,6 +8,7 @@ from typing import Tuple
 import warnings
 
 # Use codes as defined by the [codebook](https://www.mass.gov/files/documents/2016/08/wr/classificationcodebook.pdf)
+
 USE_CODES = {
     '101': "Single Family",
     '102': "Condominium",
@@ -33,6 +34,12 @@ USE_CODES = {
     '013': "Multiple-Use, primarily Residential",
     '031': "Multiple-Use, primarily Commercial",
     '950': "Charitable, Vacant, Conservation Organizations"
+}
+
+# Currently only need mappings for Milton and Quincy. Expand to add more municipalities.
+TOWN_IDS = {
+    189: "Milton",
+    243: "Quincy",
 }
 
 RESIDENTIAL_USE_CODES = ['101', '102', '103', '104', '105', '109', '013']
@@ -65,7 +72,23 @@ PRIMARY_PURPOSE_CODES = {
     "X": "Unknown"
 }
 
+def transform_use_codes(use_codes: pd.Series) -> pd.Series:
+    """
+    Standardizes use codes by extracting first three digits and looking up description
 
+    USE_CODE – state three-digit use code with optional extension digit to accommodate the four-digit codes commonly used
+    by assessors. If the codes contain a four-digit use code, because the meaning of the fourth digit varies from community-to-community,
+    the standard requires a lookup table. See the end of this Section for more details on this look-up table.
+    """
+    def use_codes_map(use_code):
+        try:
+            use_description = USE_CODES[use_code]
+        except KeyError:
+            use_description = "Other"
+        return use_description
+
+    use_code_descriptions = use_codes.str[:3].map(use_codes_map)
+    return use_code_descriptions
 
 def plot_map(gdf: gpd.GeoDataFrame,
              column: str,
