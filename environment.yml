@@ -13,7 +13,8 @@ dependencies:
   - ipython
   - ipywidgets
   - jupyter
-  - mamba
+  - nbconvert
+  - nbsphinx
   - matplotlib
   - numpy
   - pandas
@@ -22,3 +23,5 @@ dependencies:
   - scikit-learn
   - scipy
   - seaborn
+  - sphinx
+  - typing
