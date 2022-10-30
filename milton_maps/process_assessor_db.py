@@ -13,6 +13,7 @@ import json
 import milton_maps as mm
 from fiona.errors import DriverError
 
+
 def process_assessor_db(input_path, layer, output_path):
     try:
         assessor_df = gpd.read_file(input_path, layer=layer)
@@ -25,10 +26,10 @@ def process_assessor_db(input_path, layer, output_path):
     # so we replace LOC_ID with the combination of those two fields when missting.
     assessor_df.index = assessor_df.LOC_ID.fillna(assessor_df.TOWN_ID.astype(str) + assessor_df.PROP_ID)
 
-    #Clean up multiple spaces in site address field
+    # Clean up multiple spaces in site address field
     assessor_df['SITE_ADDR'] = assessor_df['SITE_ADDR'].str.split().str.join(' ')
 
-    #Append human-readable fields
+    # Append human-readable fields
     assessor_df['USE_DESCRIPTION'] = mm.transform_use_codes(assessor_df.USE_CODE)
     assessor_df['IS_RESIDENTIAL'] = assessor_df['USE_CODE'].str[:3].isin(mm.RESIDENTIAL_USE_CODES)
 
@@ -56,4 +57,3 @@ def main(argv):
 if __name__ == "__main__":
     argv = sys.argv
     sys.exit(main(argv))  # pragma: no cover
-

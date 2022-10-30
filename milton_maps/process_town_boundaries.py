@@ -31,7 +31,9 @@ def process_town_boundaries(input_path, output_path):
     town_boundaries['SQUARE_MIL'] = town_boundaries['SHAPE_AREA'] / 2.59e+6 # Square meters per square mile
 
     # Sanity checks
-    # 1. Check that "TOWN" has not been dropped (it should be a uniquely associated with TOWN_ID) and save the TOWN_ID=>TOWN mapping
+    # 1. Check that "TOWN" has not been dropped
+    #   (it should be a uniquely associated with TOWN_ID) and save the
+    #   TOWN_ID=>TOWN mapping
     assert "TOWN" in town_boundaries.columns
 
     # 2. The Multipolygon's areas should very closely match the sum of shapefile areas over each TOWN_ID
