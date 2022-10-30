@@ -8,8 +8,8 @@ stages:
       md5: 331b2ee589890a213b4177f52faf29c3
       size: 10503656
     - path: milton_maps/process_town_boundaries.py
-      md5: 2f0049310a39d18221b9d8a9878fd91c
-      size: 3027
+      md5: 3aa73ab820ae599799c8a1f390e82018
+      size: 3043
     outs:
     - path: data/processed/town_boundaries.shp.zip
       md5: dc5813ad9608a18dff72697eedc27093
@@ -29,8 +29,8 @@ stages:
       size: 11740324
       nfiles: 104
     - path: milton_maps/process_assessor_db.py
-      md5: 0944f421860baf7d7e84881405f36549
-      size: 2226
+      md5: 5b6d4e2e084956ee0fa3f34347778e38
+      size: 2228
     outs:
     - path: data/processed/milton_assessor_db.pkl
       md5: 40fbb1c5542a31a9d6f6680e75d6f137
@@ -47,8 +47,8 @@ stages:
       size: 28882890
       nfiles: 97
     - path: milton_maps/process_assessor_db.py
-      md5: 0944f421860baf7d7e84881405f36549
-      size: 2226
+      md5: 5b6d4e2e084956ee0fa3f34347778e38
+      size: 2228
     outs:
     - path: data/processed/quincy_assessor_db.pkl
       md5: b9d17bdaf59f31e4745c2e9bb60bcacc
