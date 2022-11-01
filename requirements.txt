@@ -1,0 +1,9 @@
+geopandas~=0.12.0
+matplotlib~=3.5.3
+pandas~=1.5.1
+setuptools~=65.5.0
+typing
+docopt~=0.6.2
+joblib~=1.2.0
+fiona~=1.8.22
+shapely~=1.8.5

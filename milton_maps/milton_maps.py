@@ -119,13 +119,10 @@ def plot_map(gdf: gpd.GeoDataFrame,
             point geometries. Defaults to ``0.01``.
         title (str): the title of the figure. Defaults to ``None``, in which case no title will be
             set.
-        coord (str): whether the coordinates are distance based (``'distance'``) or
-            latitude-longitude based (``'latlong'``). Defaults to ``'distance'``. Acceptable values
-            include ``'distance'``,``'latlong'``.
         cmap (str): the color map to use in the map plot. Defaults to ``'gist_earth'``. The color
             maps available in matplotlib can be found here:
             https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
-        ax:
+        ax: (matplotlib.axes._subplots.AxesSubplot) matplotlib axis object to add plot to
 
     Returns:
         matplotlib.axes._subplots.AxesSubplot: matplotlib plot.
