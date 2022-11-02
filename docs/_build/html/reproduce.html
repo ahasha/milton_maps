@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Reproduce the Analyses &#8212; Milton Maps 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Open Space Analysis" href="open_space_analysis.html" />
+    <link rel="prev" title="Milton Maps" href="readme.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reproduce-the-analyses">
+<h1>Reproduce the Analyses<a class="headerlink" href="#reproduce-the-analyses" title="Permalink to this heading">¶</a></h1>
+<section id="download-souce-code">
+<h2>Download Souce Code<a class="headerlink" href="#download-souce-code" title="Permalink to this heading">¶</a></h2>
+<p>Download the source code for Milton Maps from the <a class="reference external" href="https://github.com/ahasha/milton_maps">Github repo</a>.</p>
+<p>You can either clone the public repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone git://github.com/ahasha/milton_maps
+</pre></div>
+</div>
+<p>Or download the <a class="reference external" href="https://github.com/ahasha/milton_maps/tarball/master">tarball</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -OJL https://github.com/ahasha/milton_maps/tarball/master
+</pre></div>
+</div>
+</section>
+<section id="install-software-dependencies">
+<h2>Install Software Dependencies<a class="headerlink" href="#install-software-dependencies" title="Permalink to this heading">¶</a></h2>
+<p>The python package environment for this analysis is managed using
+<a class="reference external" href="https://conda.io/projects/conda/en/latest/index.html">conda</a>.
+If not already installed on your system, I recommend installing the Anaconda python distribution
+as detailed <a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/install/index.html">here</a>.  For a
+quicker startup requiring less disk space, you may prefer to install the Miniconda distribution.</p>
+<p>I strongly recommend installing <cite>mamba</cite>, which is a C++ port of the <cite>conda</cite> package manager.
+It provides significantly faster dependency resolution, which can cause fresh environment
+set ups to be very time consuming with conda.  Mamba should be installed in the <em>conda base
+environment</em> only:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>conda install -c conda-forge mamba
+</pre></div>
+</div>
+<p>With conda/mamba installed, the analytical environment for this project is created
+and activated with the following terminal commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>mamba env create -f environment.yml
+<span class="gp">$ </span>conda activate milton-maps
+</pre></div>
+</div>
+<p>This installs all package dependencies of the project and also the project’s shared
+module <cite>milton_maps</cite> in “editable” mode, so that local changes to the project files will be loaded
+when the <cite>milton_maps</cite> is imported.</p>
+<p>When you are done working with the project, deactivate the conda environment with</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>conda deactivate
+</pre></div>
+</div>
+</section>
+<section id="get-data-sources">
+<h2>Get Data Sources<a class="headerlink" href="#get-data-sources" title="Permalink to this heading">¶</a></h2>
+<p>This project uses <a class="reference external" href="https://dvc.org/">DVC</a> to store versioned data compatible with the
+the current state of the code in the git repository.  The data repository is hosted in
+a public Google Drive which you should be able to read from but not write to.</p>
+<p>The following command will retried both the raw and processed data sets necessary to
+run the analysis notebooks</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc pull
+</pre></div>
+</div>
+<p>This command will open a google authentication workflow in your browser, and you will
+need to grant permissions for DVC to access data using your google account. If
+you have issues with access, reach out to
+<a class="reference external" href="mailto:ahasha&#37;&#52;&#48;sustainablemilton&#46;org">ahasha<span>&#64;</span>sustainablemilton<span>&#46;</span>org</a> for assistance.</p>
+</section>
+<section id="running-analysis-notebooks">
+<h2>Running Analysis Notebooks<a class="headerlink" href="#running-analysis-notebooks" title="Permalink to this heading">¶</a></h2>
+<p>After running <cite>dvc pull</cite>, you should be able to directly execute the analyses
+notebooks in <cite>notebooks</cite> by running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>jupyter notebook <span class="p">&amp;</span>
+</pre></div>
+</div>
+<p>and opening the desired notebook from the UI.  The notebooks use cleaned and
+transformed data from the <cite>data/processed</cite> directory that I have generated using a
+<cite>dvc</cite> pipeline and stored in the data repository, so these pipelines do not need to
+be re-run in order to execute the notebooks.</p>
+</section>
+<section id="reproducing-or-modifying-data-cleaning-pipeline">
+<h2>Reproducing or Modifying Data Cleaning Pipeline<a class="headerlink" href="#reproducing-or-modifying-data-cleaning-pipeline" title="Permalink to this heading">¶</a></h2>
+<p>If you want to reproduce or modify the cleaned and transformed datasets used by
+the notebooks, you should first delete the processed data by running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make clean-processed-data
+</pre></div>
+</div>
+<p>Then execute the <cite>dvc</cite> data processing pipeline by running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc repro -f
+</pre></div>
+</div>
+<p>This executes a DAG of data processing stages defined in <cite>dvc.yaml</cite>, intelligently
+running only those stages where an output is missing or an input has been modified.
+The <cite>-f</cite> or “force” flag ensures that the processing stages are recalculated and not
+pulled from the dvc cache.  Then run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc status
+</pre></div>
+</div>
+<p><cite>dvc</cite> computes a checksum of each of the output files to determine if they have been
+modified.  If the results have been reproduced exactly in your local environment, you
+should see the message</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Data and pipelines are up to date.</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Milton Maps</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Milton Maps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reproduce the Analyses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download-souce-code">Download Souce Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-software-dependencies">Install Software Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-data-sources">Get Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-analysis-notebooks">Running Analysis Notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproducing-or-modifying-data-cleaning-pipeline">Reproducing or Modifying Data Cleaning Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">milton_maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bug_report.html">Bug Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="readme.html" title="previous chapter">Milton Maps</a></li>
+      <li>Next: <a href="open_space_analysis.html" title="next chapter">Open Space Analysis</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Alex Hasha.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/reproduce.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

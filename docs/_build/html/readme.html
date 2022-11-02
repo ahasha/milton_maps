@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Milton Maps &#8212; Milton Maps 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reproduce the Analyses" href="reproduce.html" />
+    <link rel="prev" title="Milton Maps" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="milton-maps">
+<h1>Milton Maps<a class="headerlink" href="#milton-maps" title="Permalink to this heading">¶</a></h1>
+<p>Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.</p>
+<section id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this heading">¶</a></h2>
+<p>This repository contains an example analysis combining several publicly available geospatial datasets
+pertaining to the town of Milton, MA and surrounding communities.  I had two goals in putting this
+together:</p>
+<ol class="arabic simple">
+<li><p>Build awareness in the Milton community of civic organizations of available sources of map data and
+how they might be used to answer questions of local interest.  Provide a starting foundation for
+anyone in town who may want to work with this data in Python.</p></li>
+<li><p>Provide an example of a Python project structure that is portable, transparent and reproducibile using
+modern tools for data versioning, document generation, and python environment management.
+Namely, <a class="reference external" href="dvc.org">dvc</a> for data version control, <a class="reference external" href="https://www.sphinx-doc.org/en/master/">sphinx</a>
+for document generation, and <a class="reference external" href="https://conda.io/">conda</a> for environment management.</p></li>
+</ol>
+</section>
+<section id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading">¶</a></h2>
+<p>While all the datasets used in this analysis are publicly available, they are too large
+to check into the git code repository and it would be laborious to expect users of
+this repository to go through the process of downloading each one individually.
+This project uses <a class="reference external" href="dvc.org">dvc</a> to interact with a versioned repository of
+project data stored in a Google Drive folder hosted by <a class="reference external" href="https://www.sustainablemilton.org/">Sustainable Milton</a>.</p>
+<p>Retrieve the versioned datasets used to produce the analytical results in this
+project by running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc pull
+</pre></div>
+</div>
+<p>This command will open a google authentication workflow in your browser, and you will
+need to grant permissions for DVC to access data using your google account. If
+you have issues with access, reach out to
+<a class="reference external" href="mailto:ahasha&#37;&#52;&#48;sustainablemilton&#46;org">ahasha<span>&#64;</span>sustainablemilton<span>&#46;</span>org</a> for assistance.</p>
+<section id="open-space-parcels">
+<h3>Open space parcels<a class="headerlink" href="#open-space-parcels" title="Permalink to this heading">¶</a></h3>
+<p>A shapefile of open and recreational space parcles in Massachusetts was obtained
+from <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-protected-and-recreational-openspace#downloads-">the mass.gov website</a>.
+It is provided with the following disclaimer:</p>
+<blockquote>
+<div><p>These data are very useful for most statewide and regional planning purposes.
+However, they are not a legal record of ownership, and the user should understand that
+parcel representations are generally not based on property surveys.</p>
+</div></blockquote>
+<p>Data documentation is currently <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-protected-and-recreational-openspace">provided online</a>
+and a <a class="reference external" href="data/docs/MassGIS_Openspace.pdf">PDF copy</a> of the website as it was accessed when the data was downloaded is saved locally
+in case the website is moved or modified.</p>
+<p>The shapefile data can be re-downloaded from the mass.gov website by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">refresh</span><span class="o">-</span><span class="n">openspace</span><span class="o">-</span><span class="n">data</span>
+</pre></div>
+</div>
+</section>
+<section id="tax-parcels">
+<h3>Tax Parcels<a class="headerlink" href="#tax-parcels" title="Permalink to this heading">¶</a></h3>
+<p>Downloaded from <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels">mass.gov property tax parcel</a>.
+The files are offered with the following disclaimer:</p>
+<blockquote>
+<div><p>Assessor’s parcel mapping is a representation of property boundaries, not an authoritative source.
+The authoritative record of property boundaries is recorded at the registries of deeds. A legally
+authoritative map of property boundaries can only be produced by a professional land surveyor.</p>
+</div></blockquote>
+<p>Data documentation is currently <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels">provided online</a>
+and a <a class="reference external" href="data/docs/MassGIS_PropertyTaxParcels.pdf">PDF copy</a> of the website as it was accessed when the data
+is saved locally in case the website is moved or modified.</p>
+<p>Full data dictionary and other documentation are provided in the <a class="reference external" href="https://www.mass.gov/doc/standard-for-digital-parcels-and-related-data-sets-version-3/download">Parcel Standard</a>.
+A <a class="reference external" href="data/docs/Mass_Parcel_Standard_Version3.pdf">PDF copy</a> of the standard is saved locally in case the website is moved or modified.</p>
+</section>
+<section id="mass-dot-crash-data">
+<h3>Mass DOT Crash Data<a class="headerlink" href="#mass-dot-crash-data" title="Permalink to this heading">¶</a></h3>
+<p>A crash data report for Milton, MA was requested from the Department of Transportation (MassDOT)
+<a class="reference external" href="https://apps.impact.dot.state.ma.us/cdp/home">IMPACT Portal</a> using the
+<a class="reference external" href="https://apps.impact.dot.state.ma.us/cdp/extract">Data Extraction</a> tool.  Crash data for the
+years 2016-2022 in Milton, MA were requested via the web page, and a personalized download link was
+emailed shortly thereafter.  Data documentation provided with the download link is saved in
+<cite>data/docs/MassDOT_crashdata_support_information.pdf</cite>.</p>
+<p>The data is provided with the following disclaimer.</p>
+<blockquote>
+<div><p>MassDOT makes no representation as to the accuracy, adequacy, reliability, availability or
+completeness of the crash records or the data collected from them and is not responsible for
+any errors or omissions in such records or data. Under no circumstance will MassDOT have any
+liability for any loss or damage incurred by any party as a result of the use of the crash
+records or the data collected from them. Furthermore, the data contained in the web-based crash
+report tool are not an official record of what transpired in a particular crash or for a particular
+crash type. If a user is interested in an official copy of a crash report, contact the
+Registry (<a class="reference external" href="http://www.mass.gov/rmv/">http://www.mass.gov/rmv/</a>).</p>
+<p>The City of Boston Police Department may be contacted directly for official copies of crash
+reports and for crash data pertaining to the City of Boston. In addition, any crash records
+or data provided for the years 2020 and later are subject to change at any time and are not
+to be considered up-to-date or complete. As such, open years’ of crash data are for informational
+purposes only and should not be used for analysis.</p>
+<p>The data posted on this website, including crash records and other reports, are collected for
+the purpose of identifying, evaluating or planning the safety enhancement of potential crash
+sites, hazardous roadway conditions or railway-highway crossings. Under federal law, this
+information is not subject to discovery and cannot be admitted into evidence in any federal or
+state court proceeding or considered for other purposes in any action for damages that involves the
+sites mentioned in these records (see 23 USC, Section 409).</p>
+</div></blockquote>
+</section>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this heading">¶</a></h2>
+<p>This package was created with <a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a> and the <a class="reference external" href="https://github.com/audreyr/cookiecutter-pypackage">audreyr/cookiecutter-pypackage</a> project template.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Milton Maps</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Milton Maps</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reproduce.html">Reproduce the Analyses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">milton_maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bug_report.html">Bug Reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Milton Maps</a></li>
+      <li>Next: <a href="reproduce.html" title="next chapter">Reproduce the Analyses</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Alex Hasha.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/readme.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
