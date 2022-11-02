@@ -3,20 +3,45 @@ Milton Maps
 ===========
 
 
-Analysis of GIS geospatial data sources for Milton, MA
+Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.
 
 Purpose
 -------
 
-This repository contains a reproducible analysis of geospatial datasets pertaining to the town of Milton, MA and
-surrounding communities.
+This repository contains an example analysis combining several publicly available geospatial datasets
+pertaining to the town of Milton, MA and surrounding communities.  I had two goals in putting this
+together:
+
+1. Build awareness in the Milton community of civic organizations of available sources of map data and
+   how they might be used to answer questions of local interest.  Provide a starting foundation for
+   anyone in town who may want to work with this data in Python.
+2. Provide an example of a Python project structure that is portable, transparent and reproducibile using
+   modern tools for data versioning, document generation, and python environment management.
+   Namely, `dvc <dvc.org>`_ for data version control, `sphinx <https://www.sphinx-doc.org/en/master/>`_
+   for document generation, and `conda <https://conda.io/>`_ for environment management.
+
+
 
 Datasets
 --------
 
-Retrieve the versioned datasets used to produce the analytical results in this project using `DVC <https://dvc.org/>`_ by running::
+While all the datasets used in this analysis are publicly available, they are too large
+to check into the git code repository and it would be laborious to expect users of
+this repository to go through the process of downloading each one individually.
+This project uses `dvc <dvc.org>`_ to interact with a versioned repository of
+project data stored in a Google Drive folder hosted by `Sustainable Milton <https://www.sustainablemilton.org/>`_.
 
-    dvc pull
+Retrieve the versioned datasets used to produce the analytical results in this
+project by running
+
+.. code-block:: console
+
+    $ dvc pull
+
+This command will open a google authentication workflow in your browser, and you will
+need to grant permissions for DVC to access data using your google account. If
+you have issues with access, reach out to
+`ahasha@sustainablemilton.org <mailto:ahasha@sustainablemilton.org>`_ for assistance.
 
 Open space parcels
 ================
@@ -54,11 +79,40 @@ is saved locally in case the website is moved or modified.
 Full data dictionary and other documentation are provided in the `Parcel Standard <https://www.mass.gov/doc/standard-for-digital-parcels-and-related-data-sets-version-3/download>`_.
 A `PDF copy <data/docs/Mass_Parcel_Standard_Version3.pdf>`_ of the standard is saved locally in case the website is moved or modified.
 
+Mass DOT Crash Data
+===================
 
-Analysis
---------
+A crash data report for Milton, MA was requested from the Department of Transportation (MassDOT)
+`IMPACT Portal <https://apps.impact.dot.state.ma.us/cdp/home>`_ using the
+`Data Extraction <https://apps.impact.dot.state.ma.us/cdp/extract>`_ tool.  Crash data for the
+years 2016-2022 in Milton, MA were requested via the web page, and a personalized download link was
+emailed shortly thereafter.  Data documentation provided with the download link is saved in
+`data/docs/MassDOT_crashdata_support_information.pdf`.
 
-* TODO
+The data is provided with the following disclaimer.
+
+    MassDOT makes no representation as to the accuracy, adequacy, reliability, availability or
+    completeness of the crash records or the data collected from them and is not responsible for
+    any errors or omissions in such records or data. Under no circumstance will MassDOT have any
+    liability for any loss or damage incurred by any party as a result of the use of the crash
+    records or the data collected from them. Furthermore, the data contained in the web-based crash
+    report tool are not an official record of what transpired in a particular crash or for a particular
+    crash type. If a user is interested in an official copy of a crash report, contact the
+    Registry (http://www.mass.gov/rmv/).
+
+    The City of Boston Police Department may be contacted directly for official copies of crash
+    reports and for crash data pertaining to the City of Boston. In addition, any crash records
+    or data provided for the years 2020 and later are subject to change at any time and are not
+    to be considered up-to-date or complete. As such, open years’ of crash data are for informational
+    purposes only and should not be used for analysis.
+
+    The data posted on this website, including crash records and other reports, are collected for
+    the purpose of identifying, evaluating or planning the safety enhancement of potential crash
+    sites, hazardous roadway conditions or railway-highway crossings. Under federal law, this
+    information is not subject to discovery and cannot be admitted into evidence in any federal or
+    state court proceeding or considered for other purposes in any action for damages that involves the
+    sites mentioned in these records (see 23 USC, Section 409).
+
 
 Credits
 -------

@@ -2,6 +2,7 @@ name: milton-maps
 channels:
   - conda-forge
 dependencies:
+  - contextily
   - dvc
   - dvc-gdrive
   - docopt
@@ -12,6 +13,7 @@ dependencies:
   - ipykernel
   - ipython
   - ipywidgets
+  - pip
   - jupyter
   - nbconvert
   - nbsphinx
@@ -24,4 +26,5 @@ dependencies:
   - scipy
   - seaborn
   - sphinx
-  - typing
+  - pip:
+      - --editable .

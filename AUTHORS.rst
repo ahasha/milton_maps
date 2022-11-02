@@ -2,12 +2,12 @@
 Credits
 =======
 
-Development Lead
-----------------
+Author
+------
 
 * Alex Hasha <ahasha@gmail.com>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+None yet.

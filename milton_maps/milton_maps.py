@@ -1,3 +1,4 @@
+import contextily as ctx
 import geopandas as gpd
 import matplotlib
 import matplotlib.pyplot  as plt
@@ -78,6 +79,7 @@ def transform_use_codes(use_codes: pd.Series) -> pd.Series:
     USE_CODE – state three-digit use code with optional extension digit to accommodate the four-digit codes commonly used
     by assessors. If the codes contain a four-digit use code, because the meaning of the fourth digit varies from community-to-community,
     the standard requires a lookup table. See the end of this Section for more details on this look-up table.
+
     """
     def use_codes_map(use_code):
         try:
@@ -108,24 +110,24 @@ def plot_map(gdf: gpd.GeoDataFrame,
         gdf (geopandas.GeoDataFrame): the GeoDataFrame we want to plot map from.
         column (str): column name that we want to use in the plot.
         categorical (bool): ``True`` if the column should be treated as a categorical variable,
-            ``False`` if not. Defaults to ``True``.
+            `               `False`` if not. Defaults to ``True``.
         axis_scale (float): the scale to enlarge or shrink the axis. Defaults to ``1`` (no size
-            adjustments).
+                            adjustments).
         legend_shift (float): how much to shift the legend box to the right. Defaults to ``1``.
-            Larger number will shift the legend box further to the right. This parameter
-            is used to prevent overlap of the legend box and the map.
+                              Larger number will shift the legend box further to the right. This parameter
+                              is used to prevent overlap of the legend box and the map.
         figsize (tuple): the size of the figure. Defaults to ``(20, 20)``.
         markersize (float): the size of the marker, only useful for GeoDataFrame that contains
-            point geometries. Defaults to ``0.01``.
-        title (str): the title of the figure. Defaults to ``None``, in which case no title will be
-            set.
+                            point geometries. Defaults to ``0.01``.
+        title (str): the title of the figure. Defaults to ``None``, in which case no title will be set.
         cmap (str): the color map to use in the map plot. Defaults to ``'gist_earth'``. The color
-            maps available in matplotlib can be found here:
-            https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
+                    maps available in matplotlib can be found here:
+                    https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html
         ax: (matplotlib.axes._subplots.AxesSubplot) matplotlib axis object to add plot to
 
     Returns:
         matplotlib.axes._subplots.AxesSubplot: matplotlib plot.
+
     """
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -177,6 +179,7 @@ def make_choropleth_style_function(df: pd.DataFrame,
 
     return stylefunc, colormap_dict
 
+
 def html_legend(cmap_dict):
     table_html = """<table>
   <tr>
@@ -189,3 +192,12 @@ def html_legend(cmap_dict):
     ) + "</table>"
 
     return table_html
+
+# def add_basemap(ax, zoom, url=ctx.sources.ST_TONER_LITE):
+#     xmin, xmax, ymin, ymax = ax.axis()
+#     basemap, extent = ctx.bounds2img(xmin, ymin, xmax, ymax, zoom=zoom, source=url)
+#     ax.imshow(basemap, extent=extent, interpolation='bilinear')
+#     # restore original x/y limits
+#     ax.axis((xmin, xmax, ymin, ymax))
+
+

@@ -12,8 +12,8 @@ stages:
       size: 3043
     outs:
     - path: data/processed/town_boundaries.shp.zip
-      md5: dc5813ad9608a18dff72697eedc27093
-      size: 3996108
+      md5: 84376e00a547055354afd2445d9cb007
+      size: 3996105
     - path: data/processed/town_ids.json
       md5: 2d48a7c55d1c7f2bed6aebc4385325f3
       size: 6656
@@ -64,8 +64,8 @@ stages:
       size: 1450
     outs:
     - path: data/processed/openspace.shp.zip
-      md5: 0175aa074994020cbedacbb4d5639933
-      size: 40405719
+      md5: a1cb015a9812c04c86a57efbd7bcf88a
+      size: 40405718
   process_tax_parcels:
     cmd: milton_maps process_tax_parcels data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
       data/processed/milton_assessor_db.pkl,data/processed/quincy_assessor_db.pkl

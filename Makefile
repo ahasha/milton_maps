@@ -87,12 +87,19 @@ dist: clean ## builds source and wheel package
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
-clean-data:
+clean-raw-data:
 	rm -rf data/raw/openspace
 	rm -rf data/raw/L3_SHP_M189_MILTON
 	rm -rf data/raw/M189_parcels_gdb
 	rm -rf data/raw/L3_SHP_M243_QUINCY
 	rm -rf data/raw/M243_parcels_gdb
+
+clean-processed-data:
+	rm -f data/processed/*.pkl
+	rm -f data/processed/*.zip
+	rm -f data/processed/*.json
+
+clean-data: clean-raw-data clean-processed-data
 
 refresh-openspace-data:
 	rm -rf data/raw/openspace

@@ -1,15 +1,16 @@
-Welcome to Milton Maps's documentation!
-======================================
+Milton Maps
+===========
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    readme
-   installation
-   usage
+   reproduce
+   open_space_analysis
+   construction_years
    modules
-   contributing
+   bug_report
    authors
    history
 
