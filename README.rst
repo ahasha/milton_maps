@@ -4,6 +4,7 @@ Milton Maps
 
 
 Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.
+Check out the source code on `GitHub <https://github.com/ahasha/milton_maps>`_.
 
 Purpose
 -------
@@ -28,7 +29,7 @@ Datasets
 The analyses in this project use the following public GIS data sets
 
 Open space parcels
-================
+==================
 
 A shapefile of open and recreational space parcles in Massachusetts was obtained
 from `the mass.gov website <https://www.mass.gov/info-details/massgis-data-protected-and-recreational-openspace#downloads->`_.
