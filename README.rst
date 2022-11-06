@@ -25,23 +25,7 @@ together:
 Datasets
 --------
 
-While all the datasets used in this analysis are publicly available, they are too large
-to check into the git code repository and it would be laborious to expect users of
-this repository to go through the process of downloading each one individually.
-This project uses `dvc <dvc.org>`_ to interact with a versioned repository of
-project data stored in a Google Drive folder hosted by `Sustainable Milton <https://www.sustainablemilton.org/>`_.
-
-Retrieve the versioned datasets used to produce the analytical results in this
-project by running
-
-.. code-block:: console
-
-    $ dvc pull
-
-This command will open a google authentication workflow in your browser, and you will
-need to grant permissions for DVC to access data using your google account. If
-you have issues with access, reach out to
-`ahasha@sustainablemilton.org <mailto:ahasha@sustainablemilton.org>`_ for assistance.
+The analyses in this project use the following public GIS data sets
 
 Open space parcels
 ================
