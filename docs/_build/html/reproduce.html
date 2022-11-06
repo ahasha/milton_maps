@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Open Space Analysis" href="open_space_analysis.html" />
-    <link rel="prev" title="Milton Maps" href="readme.html" />
+    <link rel="prev" title="Milton Maps" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -80,11 +80,16 @@ when the <cite>milton_maps</cite> is imported.</p>
 </section>
 <section id="get-data-sources">
 <h2>Get Data Sources<a class="headerlink" href="#get-data-sources" title="Permalink to this heading">¶</a></h2>
+<p>While all the datasets used in this analysis are publicly available, they are too large
+to check into the git code repository and it would be laborious to expect users of
+this repository to go through the process of downloading each one individually.</p>
 <p>This project uses <a class="reference external" href="https://dvc.org/">DVC</a> to store versioned data compatible with the
 the current state of the code in the git repository.  The data repository is hosted in
-a public Google Drive which you should be able to read from but not write to.</p>
-<p>The following command will retried both the raw and processed data sets necessary to
-run the analysis notebooks</p>
+a public Google Drive hosted by <a class="reference external" href="https://www.sustainablemilton.org/">Sustainable Milton</a>
+which you should be able to read from but not write to.</p>
+<p>Running the following command from the root directory of the project
+will retrieve both the raw and processed data sets necessary to run the
+analysis notebooks</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc pull
 </pre></div>
 </div>
@@ -149,9 +154,7 @@ should see the message</p>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Milton Maps</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Reproduce the Analyses</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download-souce-code">Download Souce Code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-software-dependencies">Install Software Dependencies</a></li>
@@ -172,7 +175,7 @@ should see the message</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="readme.html" title="previous chapter">Milton Maps</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Milton Maps</a></li>
       <li>Next: <a href="open_space_analysis.html" title="next chapter">Open Space Analysis</a></li>
   </ul></li>
 </ul>

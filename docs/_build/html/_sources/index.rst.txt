@@ -1,11 +1,11 @@
-Milton Maps
-===========
+.. include:: ../README.rst
+
+Contents
+--------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-   readme
    reproduce
    open_space_analysis
    construction_years

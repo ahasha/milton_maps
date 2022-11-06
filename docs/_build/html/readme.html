@@ -18,8 +18,6 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Reproduce the Analyses" href="reproduce.html" />
-    <link rel="prev" title="Milton Maps" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -38,7 +36,8 @@
             
   <section id="milton-maps">
 <h1>Milton Maps<a class="headerlink" href="#milton-maps" title="Permalink to this heading">¶</a></h1>
-<p>Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.</p>
+<p>Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.
+Check out the source code on <a class="reference external" href="https://github.com/ahasha/milton_maps">GitHub</a>.</p>
 <section id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this heading">¶</a></h2>
 <p>This repository contains an example analysis combining several publicly available geospatial datasets
@@ -56,20 +55,7 @@ for document generation, and <a class="reference external" href="https://conda.i
 </section>
 <section id="datasets">
 <h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading">¶</a></h2>
-<p>While all the datasets used in this analysis are publicly available, they are too large
-to check into the git code repository and it would be laborious to expect users of
-this repository to go through the process of downloading each one individually.
-This project uses <a class="reference external" href="dvc.org">dvc</a> to interact with a versioned repository of
-project data stored in a Google Drive folder hosted by <a class="reference external" href="https://www.sustainablemilton.org/">Sustainable Milton</a>.</p>
-<p>Retrieve the versioned datasets used to produce the analytical results in this
-project by running</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>dvc pull
-</pre></div>
-</div>
-<p>This command will open a google authentication workflow in your browser, and you will
-need to grant permissions for DVC to access data using your google account. If
-you have issues with access, reach out to
-<a class="reference external" href="mailto:ahasha&#37;&#52;&#48;sustainablemilton&#46;org">ahasha<span>&#64;</span>sustainablemilton<span>&#46;</span>org</a> for assistance.</p>
+<p>The analyses in this project use the following public GIS data sets</p>
 <section id="open-space-parcels">
 <h3>Open space parcels<a class="headerlink" href="#open-space-parcels" title="Permalink to this heading">¶</a></h3>
 <p>A shapefile of open and recreational space parcles in Massachusetts was obtained
@@ -158,14 +144,7 @@ sites mentioned in these records (see 23 USC, Section 409).</p>
 
 
 <h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Milton Maps</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#credits">Credits</a></li>
-</ul>
-</li>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="reproduce.html">Reproduce the Analyses</a></li>
 <li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
@@ -179,8 +158,6 @@ sites mentioned in these records (see 23 USC, Section 409).</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Milton Maps</a></li>
-      <li>Next: <a href="reproduce.html" title="next chapter">Reproduce the Analyses</a></li>
   </ul></li>
 </ul>
 </div>
