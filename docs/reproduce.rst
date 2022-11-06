@@ -60,12 +60,18 @@ When you are done working with the project, deactivate the conda environment wit
 Get Data Sources
 ----------------
 
+While all the datasets used in this analysis are publicly available, they are too large
+to check into the git code repository and it would be laborious to expect users of
+this repository to go through the process of downloading each one individually.
+
 This project uses `DVC <https://dvc.org/>`_ to store versioned data compatible with the
 the current state of the code in the git repository.  The data repository is hosted in
-a public Google Drive which you should be able to read from but not write to.
+a public Google Drive hosted by `Sustainable Milton <https://www.sustainablemilton.org/>`_
+which you should be able to read from but not write to.
 
-The following command will retried both the raw and processed data sets necessary to
-run the analysis notebooks
+Running the following command from the root directory of the project
+will retrieve both the raw and processed data sets necessary to run the
+analysis notebooks
 
 .. code-block:: console
 
