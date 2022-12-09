@@ -130,3 +130,9 @@ refresh-municipal-boundary-data:
 	curl -o data/raw/townssurvey_shp.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/townssurvey_shp.zip
 	unzip data/raw/townssurvey_shp.zip -d data/raw/townssurvey_shp
 	rm data/raw/townssurvey_shp.zip
+
+refresh-massdot-road-data:
+	rm -rf data/raw/MassDOT_Roads_SHP
+	curl -o data/raw/MassDOT_Roads_SHP.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/MassDOT_Roads_SHP.zip
+	unzip data/raw/MassDOT_Roads_SHP.zip -d data/raw/MassDOT_Roads_SHP
+	rm data/raw/MassDOT_Roads_SHP.zip

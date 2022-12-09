@@ -1,0 +1,5 @@
+outs:
+- md5: f39a65078fdd85fa90fa3300f4d2dbe3.dir
+  size: 660710998
+  nfiles: 29
+  path: MassDOT_Roads_SHP

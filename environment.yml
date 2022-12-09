@@ -22,9 +22,11 @@ dependencies:
   - pandas
   - pandas-profiling
   - pygeos
+  - python=3.9
   - scikit-learn
   - scipy
   - seaborn
   - sphinx
+  - xlrd
   - pip:
       - --editable .
