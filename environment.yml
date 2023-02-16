@@ -27,6 +27,7 @@ dependencies:
   - scipy
   - seaborn
   - sphinx
+  - sphinx-rtd-theme
   - xlrd
   - pip:
       - --editable .
