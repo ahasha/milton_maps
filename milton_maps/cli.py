@@ -6,6 +6,7 @@ Arguments:
 Options:
   -h --help
 """
+
 import sys
 from docopt import docopt
 from milton_maps import process_assessor_db
