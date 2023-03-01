@@ -18,7 +18,7 @@ together:
    anyone in town who may want to work with this data in Python.
 2. Provide an example of a Python project structure that is portable, transparent and reproducibile using
    modern tools for data versioning, document generation, and python environment management.
-   Namely, `dvc <dvc.org>`_ for data version control, `sphinx <https://www.sphinx-doc.org/en/master/>`_
+   Namely, `dvc <https://dvc.org/>`_ for data version control, `sphinx <https://www.sphinx-doc.org/en/master/>`_
    for document generation, and `conda <https://conda.io/>`_ for environment management.
 
 
