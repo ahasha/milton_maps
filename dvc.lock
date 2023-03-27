@@ -12,8 +12,8 @@ stages:
       size: 3043
     outs:
     - path: data/processed/town_boundaries.shp.zip
-      md5: 84376e00a547055354afd2445d9cb007
-      size: 3996105
+      md5: 34fc291b2e6cdafc65e6d27abb7bca3e
+      size: 3996107
     - path: data/processed/town_ids.json
       md5: 2d48a7c55d1c7f2bed6aebc4385325f3
       size: 6656
@@ -33,8 +33,8 @@ stages:
       size: 2228
     outs:
     - path: data/processed/milton_assessor_db.pkl
-      md5: 40fbb1c5542a31a9d6f6680e75d6f137
-      size: 4200145
+      md5: 9b8ef269b555b510c83d57dc44f9afa7
+      size: 4408657
   process_quincy_assessor_db:
     cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
       M243Assess data/processed/quincy_assessor_db.pkl
@@ -51,8 +51,8 @@ stages:
       size: 2228
     outs:
     - path: data/processed/quincy_assessor_db.pkl
-      md5: b9d17bdaf59f31e4745c2e9bb60bcacc
-      size: 13176250
+      md5: 1504bf534620b88cf07337a61c3cb74a
+      size: 13980586
   process_openspace:
     cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.shp.zip
     deps:
@@ -64,19 +64,19 @@ stages:
       size: 1450
     outs:
     - path: data/processed/openspace.shp.zip
-      md5: a1cb015a9812c04c86a57efbd7bcf88a
-      size: 40405718
+      md5: 0a0f9690c31ca683f4c00386fefb732f
+      size: 40425372
   process_tax_parcels:
     cmd: milton_maps process_tax_parcels data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
       data/processed/milton_assessor_db.pkl,data/processed/quincy_assessor_db.pkl
       data/processed/residential_tax_parcels.pkl
     deps:
     - path: data/processed/milton_assessor_db.pkl
-      md5: 40fbb1c5542a31a9d6f6680e75d6f137
-      size: 4200145
+      md5: 9b8ef269b555b510c83d57dc44f9afa7
+      size: 4408657
     - path: data/processed/quincy_assessor_db.pkl
-      md5: b9d17bdaf59f31e4745c2e9bb60bcacc
-      size: 13176250
+      md5: 1504bf534620b88cf07337a61c3cb74a
+      size: 13980586
     - path: data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp
       md5: abfbc24ca43bcf63c2aadc25166c3120
       size: 3926728
@@ -88,5 +88,5 @@ stages:
       size: 2013
     outs:
     - path: data/processed/residential_tax_parcels.pkl
-      md5: d8e409d2548524d28c8129a47197cdee
-      size: 27390040
+      md5: a3ac4145cabac485b9b7fe9140966750
+      size: 27921608
