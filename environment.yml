@@ -5,6 +5,7 @@ dependencies:
   - contextily
   - dvc
   - dvc-gdrive
+  - dvc-gs
   - docopt
   - fiona
   - folium
