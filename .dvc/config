@@ -1,7 +1,10 @@
 [core]
     autostage = true
     remote = miltonmaps-gcs
+    analytics = false
 ['remote "miltonmaps"']
     url = gdrive://1IslFS6M7hzADCBSUS0TfB_SRaRr_l48C
 ['remote "miltonmaps-gcs"']
     url = gs://hasha-ds-portfolio-projects/milton_maps_dvc
+['remote "miltonmaps-public"']
+    url = gs://hasha-ds-public/milton_maps/
