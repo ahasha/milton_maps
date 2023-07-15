@@ -1,4 +1,102 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8
+#################################################################################
+# GLOBALS                                                                       #
+#################################################################################
+
+PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+POETRY := $(shell command -v poetry 2> /dev/null)
+POETRY_ENV_DIR := $(shell $(POETRY) env info -p)
+POETRY_RUN := $(POETRY) run
+PROJECT_NAME = milton_maps
+PYTHON_VERSION = 3.10
+SHELL := /bin/bash
+
+#################################################################################
+# COMMANDS                                                                      #
+#################################################################################
+.PHONY: check_poetry
+check_poetry:
+	@if [ -z $(POETRY) ]; then echo "Poetry could not be found. See https://python-poetry.rg/docs/ for installation instructions"; exit 2; fi
+	@echo $(POETRY)
+
+poetry.lock: pyproject.toml check_poetry ## Once per new project, update poetry.lock to align with pyproject.toml
+	$(POETRY) lock --no-update
+
+.PHONY: environment
+environment: poetry.lock check_poetry ## Install Python Dependencies
+	$(POETRY) install
+
+clean-environment: ## Delete project virtual environment
+	$(POETRY) env remove $(POETRY_ENV_DIR)/bin/python
+
+.PHONY: git
+git: ## DVC is designed to run inside a git repository.  Initialize a git repository if not done already
+	@git status >/dev/null 2>&1; \
+	if [[ $$? -ne 0 ]]; then \
+		git init; \
+		git add --all; \
+		git commit -m "Initial commit"; \
+	else \
+		echo "Git repo already initialized, skipping..."; \
+	fi
+
+.PHONY: pre-commit-hooks
+pre-commit-hooks: check_poetry ## Install pre-commit hooks
+	$(POETRY_RUN) pre-commit install --hook-type pre-push --hook-type post-checkout --hook-type pre-commit
+
+.PHONY: initialize
+initialize: git environment pre-commit-hooks ## Initialize project environment, dbt profiles, and pre-commit hooks
+
+
+.PHONY: test
+test: check_poetry ## Run tests
+	$(POETRY_RUN) pytest
+
+.PHONY: clean
+clean: ## Delete all compiled Python files
+	find . -type f -name "*.py[co]" -delete
+	find . -type d -name "__pycache__" -delete
+
+.PHONY: lint
+lint: check_poetry ## Lint using flake8 and brunette (use `make format` to do formatting)
+	$(POETRY_RUN) flake8 milton_maps
+	$(POETRY_RUN) brunette --check --config pyproject.toml milton_maps
+
+.PHONY: format
+format: check_poetry ## Format source code with brunette
+	$(POETRY_RUN) brunette --config pyproject.toml milton_maps
+
+
+#################################################################################
+# Automated documentation generation                                            #
+#################################################################################
+
+.PHONY: docs
+docs: check_poetry clean-docs ## Build all project documentation
+	$(POETRY_RUN) sphinx-apidoc -o docs/ milton_maps
+	$(POETRY_RUN) $(MAKE) -C docs clean
+	$(POETRY_RUN) $(MAKE) -C docs html
+
+.PHONY: clean-docs
+clean-docs: ## Remove auto-generated document elements
+	rm -f docs/milton_maps.rst || \
+	rm -f docs/modules.rst || true
+
+.PHONY: start-doc-server stop-doc-server
+
+server.pid:
+	$(POETRY_RUN) python -m http.server -d docs/_build/html > server.log 2>&1 & echo $$! > $@
+
+start-doc-server: server.pid ## Serve documentation website over http
+	@echo Documentation is being served at http://localhost:8000
+	@echo Run "make stop-server" to stop the server.
+
+stop-doc-server: ## Shut down documentation server
+	test -f server.pid && kil `cat server.pid` && rm server.pid || true
+
+#################################################################################
+# Self Documenting Commands                                                     #
+#################################################################################
+
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -21,72 +119,8 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
-
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
-
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
-
-clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
-
-clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
-
-clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
-
-lint/flake8: ## check style with flake8
-	flake8 milton_maps tests
-
-lint: lint/flake8 ## check style
-
-test: ## run tests quickly with the default Python
-	pytest
-
-
-test-all: ## run tests on every Python version with tox
-	tox
-
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source milton_maps -m pytest
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
-
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/milton_maps.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ milton_maps
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
-
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
-
-release: dist ## package and upload a release
-	twine upload dist/*
-
-dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
-
-install: clean ## install the package to the active Python's site-packages
-	python setup.py install
-
 clean-raw-data:
 	rm -rf data/raw/openspace
 	rm -rf data/raw/L3_SHP_M189_MILTON

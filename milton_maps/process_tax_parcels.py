@@ -6,52 +6,59 @@ Arguments:
   OUTPUT           output path to write processed Assessor DB as a pickled dataframe
 """
 import sys
-from docopt import docopt
-import pandas as pd
+
+import click
 import geopandas as gpd
 import joblib
-import milton_maps as mm
+import pandas as pd
+
 
 def process_tax_parcels(tax_parcel_paths, assessor_db_paths, output):
-    tax_parcels = pd.concat([
-        gpd.read_file(t) for t in tax_parcel_paths
-    ])
-    assessor_db = pd.concat([
-        joblib.load(a) for a in assessor_db_paths
-    ])
+    tax_parcels = pd.concat([gpd.read_file(t) for t in tax_parcel_paths])
+    assessor_db = pd.concat([joblib.load(a) for a in assessor_db_paths])
     tax_parcels_extended = tax_parcels.set_index("LOC_ID").join(
-        assessor_db[["PROP_ID",
-                     "LOC_ID",
-                     "TOWN",
-                     "YEAR_BUILT",
-                     "USE_DESCRIPTION",
-                     "RES_AREA",
-                     "ZONING",
-                     "UNITS",
-                     "STYLE",
-                     "LOT_SIZE",
-                     "TOTAL_VAL",
-                     "LAND_VAL",
-                     "SITE_ADDR",
-                     "IS_RESIDENTIAL"]],
-        how="outer"
+        assessor_db[
+            [
+                "PROP_ID",
+                "LOC_ID",
+                "TOWN",
+                "YEAR_BUILT",
+                "USE_DESCRIPTION",
+                "RES_AREA",
+                "ZONING",
+                "UNITS",
+                "STYLE",
+                "LOT_SIZE",
+                "TOTAL_VAL",
+                "LAND_VAL",
+                "SITE_ADDR",
+                "IS_RESIDENTIAL",
+            ]
+        ],
+        how="outer",
     )
-    residential_tax_parcels = tax_parcels_extended[tax_parcels_extended.IS_RESIDENTIAL.fillna(False)]
+    residential_tax_parcels = tax_parcels_extended[
+        tax_parcels_extended.IS_RESIDENTIAL.fillna(False)
+    ]
     joblib.dump(residential_tax_parcels, output)
 
 
-def main(argv):
+@click.command()
+@click.argument("tax_parcel_paths")
+@click.argument("assessor_db_paths")
+@click.argument("output")
+def main(tax_parcel_paths, assessor_db_paths, output):
     """Console script for processing assessor DB"""
-    arguments = docopt(__doc__, argv)
-    tax_parcel_paths = arguments['TAX_PARCELS'].split(",")
-    assessor_db_paths = arguments['ASSESSOR_DBS'].split(",")
+    tax_parcel_paths = tax_parcel_paths.split(",")
+    assessor_db_paths = assessor_db_paths.split(",")
     if len(tax_parcel_paths) != len(assessor_db_paths):
-        raise ValueError("Must provide an equal number of tax parcel and assessor db files")
+        raise ValueError(
+            "Must provide an equal number of tax parcel and assessor db files"
+        )
 
-    process_tax_parcels(tax_parcel_paths, assessor_db_paths, arguments['OUTPUT'])
+    process_tax_parcels(tax_parcel_paths, assessor_db_paths, output)
 
 
 if __name__ == "__main__":
     argv = sys.argv
     sys.exit(main(argv))  # pragma: no cover
-

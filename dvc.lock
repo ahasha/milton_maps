@@ -8,12 +8,12 @@ stages:
       md5: 331b2ee589890a213b4177f52faf29c3
       size: 10503656
     - path: milton_maps/process_town_boundaries.py
-      md5: 3aa73ab820ae599799c8a1f390e82018
-      size: 3043
+      md5: 3d4943d52c6ebf6a8a891be7061af1c9
+      size: 3200
     outs:
     - path: data/processed/town_boundaries.shp.zip
-      md5: 84376e00a547055354afd2445d9cb007
-      size: 3996105
+      md5: 6ee4705fe921677aed60ac16951939df
+      size: 3996108
     - path: data/processed/town_ids.json
       md5: 2d48a7c55d1c7f2bed6aebc4385325f3
       size: 6656
@@ -29,12 +29,12 @@ stages:
       size: 11740324
       nfiles: 104
     - path: milton_maps/process_assessor_db.py
-      md5: 5b6d4e2e084956ee0fa3f34347778e38
-      size: 2228
+      md5: bb710fd248caa129d9e03fd88b19e268
+      size: 2255
     outs:
     - path: data/processed/milton_assessor_db.pkl
-      md5: 40fbb1c5542a31a9d6f6680e75d6f137
-      size: 4200145
+      md5: ecbc35ce1f81fa6031ac931a022ffbac
+      size: 4393532
   process_quincy_assessor_db:
     cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
       M243Assess data/processed/quincy_assessor_db.pkl
@@ -47,12 +47,12 @@ stages:
       size: 28882890
       nfiles: 97
     - path: milton_maps/process_assessor_db.py
-      md5: 5b6d4e2e084956ee0fa3f34347778e38
-      size: 2228
+      md5: bb710fd248caa129d9e03fd88b19e268
+      size: 2255
     outs:
     - path: data/processed/quincy_assessor_db.pkl
-      md5: b9d17bdaf59f31e4745c2e9bb60bcacc
-      size: 13176250
+      md5: dd6bc667f2e4bf7313ad3c6b78eb3190
+      size: 13930741
   process_openspace:
     cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.shp.zip
     deps:
@@ -60,23 +60,24 @@ stages:
       md5: 1c7a6bd1e839d56935931f09cae6ad92
       size: 58151620
     - path: milton_maps/process_openspace.py
-      md5: 69d2254f48e274fa206be7fa97b9f72a
-      size: 1450
+      md5: 65fdee0742d42616616e0a6ddccfa14f
+      size: 1457
     outs:
     - path: data/processed/openspace.shp.zip
-      md5: a1cb015a9812c04c86a57efbd7bcf88a
-      size: 40405718
+      md5: 0116eb5aa457bea339c38f99209f1c94
+      size: 40425372
   process_tax_parcels:
-    cmd: milton_maps process_tax_parcels data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
+    cmd: milton_maps process_tax_parcels 
+      data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
       data/processed/milton_assessor_db.pkl,data/processed/quincy_assessor_db.pkl
       data/processed/residential_tax_parcels.pkl
     deps:
     - path: data/processed/milton_assessor_db.pkl
-      md5: 40fbb1c5542a31a9d6f6680e75d6f137
-      size: 4200145
+      md5: ecbc35ce1f81fa6031ac931a022ffbac
+      size: 4393532
     - path: data/processed/quincy_assessor_db.pkl
-      md5: b9d17bdaf59f31e4745c2e9bb60bcacc
-      size: 13176250
+      md5: dd6bc667f2e4bf7313ad3c6b78eb3190
+      size: 13930741
     - path: data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp
       md5: abfbc24ca43bcf63c2aadc25166c3120
       size: 3926728
@@ -84,9 +85,9 @@ stages:
       md5: cbd9142e70be4d3bdfb5b8e00dd8a246
       size: 8486968
     - path: milton_maps/process_tax_parcels.py
-      md5: 33316a66aa3852c8263a6311f33e2379
-      size: 2013
+      md5: 0bae42bfa9acb021cb791b1e0f620fa6
+      size: 2061
     outs:
     - path: data/processed/residential_tax_parcels.pkl
-      md5: d8e409d2548524d28c8129a47197cdee
-      size: 27390040
+      md5: 195b1f96c99a0e0a3e3df747dd00db1d
+      size: 17540927

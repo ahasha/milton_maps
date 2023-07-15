@@ -1,4 +1,3 @@
-
 """Usage: milton_maps CMD ...
 
 Arguments:
@@ -8,28 +7,29 @@ Options:
 """
 
 import sys
-from docopt import docopt
-from milton_maps import process_assessor_db
-from milton_maps import process_town_boundaries
-from milton_maps import process_openspace
-from milton_maps import process_tax_parcels
+
+from milton_maps import (
+    process_assessor_db,
+    process_openspace,
+    process_tax_parcels,
+    process_town_boundaries,
+)
+
 
 def main():
     """Console script command routing for milton_maps."""
-
-    argv = sys.argv[1:]
-    #arguments = docopt(__doc__, argv)
-    command = sys.argv[1]
-    if command == "process_assessor_db":
+    cmd = sys.argv[1]
+    argv = sys.argv[2:]
+    if cmd == "process_assessor_db":
         process_assessor_db.main(argv)
-    elif command == "process_town_boundaries":
+    elif cmd == "process_town_boundaries":
         process_town_boundaries.main(argv)
-    elif command == "process_openspace":
+    elif cmd == "process_openspace":
         process_openspace.main(argv)
-    elif command == "process_tax_parcels":
+    elif cmd == "process_tax_parcels":
         process_tax_parcels.main(argv)
     else:
-        raise ValueError(f"Command {command} unrecognized.")
+        raise ValueError(f"Command {cmd} unrecognized.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,56 @@
+[tool.brunette]
+line-length = 120
+single-quotes = false
+target-version = ["3.10"]
+include = '\.pyi?$'
+exclude = [".git",".idea",".vscode", ".dvc",".pytest_cache","docs"]
+
+[tool.poetry]
+name = "milton_maps"
+version = "0.2.0"
+description = "Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python."
+authors = ["Alex Hasha <alex@hashadatascience.com>"]
+readme = "README.md"
+packages = [{include = "milton_maps"}]
+
+[tool.poetry.dependencies]
+click = "^8.0.4"
+dvc = "^2.55.0"
+dvc-gs = "^2.22.0"
+dvc-ssh = "^2.22.1"
+jupyter = "^1.0.0"
+matplotlib = "^3.7.1"
+numpy = "^1.24.2"
+python = "^3.10"
+pandas = {version = "^2.0.2", extras = ["excel"]}
+pyarrow = "^11.0.0"
+sqlalchemy = "^1.4.32"
+scikit-learn = "^1.2.2"
+python-dotenv = "^1.0.0"
+geopandas = "^0.12.0"
+fiona = "^1.8.22"
+shapely = "^1.8.5"
+contextily = "^1.3.0"
+pandoc = "^2.3"
+folium = "^0.14.0"
+seaborn = "^0.12.2"
+pygeos = "^0.14"
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^6.1.3"
+nbsphinx = "^0.9.1"
+pre-commit = "^3.2.2"
+myst-parser = "^1.0.0"
+sphinx-rtd-theme = "^1.2.0"
+flake8 = "^6.0.0"
+isort = "^5.12.0"
+brunette = "^0.2.8"
+pytest = "^7.3.1"
+sphinxcontrib-mermaid = "^0.8.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+milton_maps = { callable = "milton_maps:cli.main"}
