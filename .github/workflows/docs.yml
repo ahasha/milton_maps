@@ -39,7 +39,7 @@ jobs:
               run: |
                 make docs
 
-            - name: Deploy Documentation
+            - name: Commit documentation to gh-pages branch
               uses: JamesIves/github-pages-deploy-action@v4
               with:
                 folder: docs/_build/html
