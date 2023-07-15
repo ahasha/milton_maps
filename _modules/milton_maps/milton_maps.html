@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>milton_maps.milton_maps &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            milton_maps
+              <img src="../../_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">milton_maps.milton_maps</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for milton_maps.milton_maps</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Use codes as defined by the [codebook](https://www.mass.gov/files/documents/2016/08/wr/classificationcodebook.pdf)</span>
+
+<span class="n">USE_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;101&quot;</span><span class="p">:</span> <span class="s2">&quot;Single Family&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;102&quot;</span><span class="p">:</span> <span class="s2">&quot;Condominium&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;103&quot;</span><span class="p">:</span> <span class="s2">&quot;Mobile Home&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;104&quot;</span><span class="p">:</span> <span class="s2">&quot;Two-Family&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;105&quot;</span><span class="p">:</span> <span class="s2">&quot;Three-Family&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;106&quot;</span><span class="p">:</span> <span class="s2">&quot;Accessory Land with Improvement - garage,etc.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;109&quot;</span><span class="p">:</span> <span class="s2">&quot;Multiple Houses on one parcel (for example, a single and a two-family on one parcel)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;132&quot;</span><span class="p">:</span> <span class="s2">&quot;Undevelopable Land&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;930&quot;</span><span class="p">:</span> <span class="s2">&quot;Municipal, Vacant, Selectmen or City Council&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;130&quot;</span><span class="p">:</span> <span class="s2">&quot;Vacant Land in a Residential Zone or Accessory to Residential Parcel, Developable Land&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;343&quot;</span><span class="p">:</span> <span class="s2">&quot;Office Building&quot;</span><span class="p">,</span>  <span class="c1"># There is no code 343 in the cited reference, but prefix 34 indicates office buildings.</span>
+    <span class="s2">&quot;131&quot;</span><span class="p">:</span> <span class="s2">&quot;Vacant Land in a Residential Zone or Accessory to Residential Parcel, Potentially Developable Land&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;945&quot;</span><span class="p">:</span> <span class="s2">&quot;Educational Private, Affilliated Housing&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;942&quot;</span><span class="p">:</span> <span class="s2">&quot;Educational Private, College or University&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;920&quot;</span><span class="p">:</span> <span class="s2">&quot;Department of Conservation and Recreation, Division of Urban Parks and Recreation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;340&quot;</span><span class="p">:</span> <span class="s2">&quot;General Office Buildings&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;931&quot;</span><span class="p">:</span> <span class="s2">&quot;Municipal, Improved, Selectmen or City Council&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;960&quot;</span><span class="p">:</span> <span class="s2">&quot;Church, Mosque, Synagogue, Temple, etc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;325&quot;</span><span class="p">:</span> <span class="s2">&quot;Small Retail and Services stores (under 10,000 sq. ft.)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;337&quot;</span><span class="p">:</span> <span class="s2">&quot;Parking Lots - a commercial open parking lot for motor vehicles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;932&quot;</span><span class="p">:</span> <span class="s2">&quot;Municipal, Vacant, Conservation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;013&quot;</span><span class="p">:</span> <span class="s2">&quot;Multiple-Use, primarily Residential&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;031&quot;</span><span class="p">:</span> <span class="s2">&quot;Multiple-Use, primarily Commercial&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;950&quot;</span><span class="p">:</span> <span class="s2">&quot;Charitable, Vacant, Conservation Organizations&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Currently only need mappings for Milton and Quincy. Expand to add more municipalities.</span>
+<span class="n">TOWN_IDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">189</span><span class="p">:</span> <span class="s2">&quot;Milton&quot;</span><span class="p">,</span>
+    <span class="mi">243</span><span class="p">:</span> <span class="s2">&quot;Quincy&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">RESIDENTIAL_USE_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;101&quot;</span><span class="p">,</span> <span class="s2">&quot;102&quot;</span><span class="p">,</span> <span class="s2">&quot;103&quot;</span><span class="p">,</span> <span class="s2">&quot;104&quot;</span><span class="p">,</span> <span class="s2">&quot;105&quot;</span><span class="p">,</span> <span class="s2">&quot;109&quot;</span><span class="p">,</span> <span class="s2">&quot;013&quot;</span><span class="p">]</span>
+
+<span class="n">PUBLIC_ACCESS_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="s2">&quot;Yes (open to public)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;No (not open to public)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="s2">&quot;Limited (membership only)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">LEVEL_OF_PROTECTION_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">:</span> <span class="s2">&quot;In Perpetuity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="s2">&quot;Temporary&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="s2">&quot;Limited&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;N&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">PRIMARY_PURPOSE_CODES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="s2">&quot;Recreation (activities are facility based)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="s2">&quot;Conservation (activities are non-facility based)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;Recreation and Conservation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;H&quot;</span><span class="p">:</span> <span class="s2">&quot;Historical/Cultural&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;Agricultural&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;W&quot;</span><span class="p">:</span> <span class="s2">&quot;Water Supply Protection&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="s2">&quot;Scenic (official designation only)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="s2">&quot;Flood Control&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;U&quot;</span><span class="p">:</span> <span class="s2">&quot;Site is underwater&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;O&quot;</span><span class="p">:</span> <span class="s2">&quot;Other (explain)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="transform_use_codes"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.milton_maps.transform_use_codes">[docs]</a><span class="k">def</span> <span class="nf">transform_use_codes</span><span class="p">(</span><span class="n">use_codes</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Standardizes use codes by extracting first three digits and looking up description</span>
+
+<span class="sd">    USE_CODE – state three-digit use code with optional extension digit to accommodate the four-digit codes commonly used</span>
+<span class="sd">    by assessors. If the codes contain a four-digit use code, because the meaning of the fourth digit varies from community-to-community,</span>
+<span class="sd">    the standard requires a lookup table. See the end of this Section for more details on this look-up table.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">use_codes_map</span><span class="p">(</span><span class="n">use_code</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">use_description</span> <span class="o">=</span> <span class="n">USE_CODES</span><span class="p">[</span><span class="n">use_code</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">use_description</span> <span class="o">=</span> <span class="s2">&quot;Other&quot;</span>
+        <span class="k">return</span> <span class="n">use_description</span>
+
+    <span class="n">use_code_descriptions</span> <span class="o">=</span> <span class="n">use_codes</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">use_codes_map</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">use_code_descriptions</span></div>
+
+
+<div class="viewcode-block" id="plot_map"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.milton_maps.plot_map">[docs]</a><span class="k">def</span> <span class="nf">plot_map</span><span class="p">(</span>
+    <span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">,</span>
+    <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">categorical</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">axis_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">legend_shift</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">markersize</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">legend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gist_earth&quot;</span><span class="p">,</span>
+    <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">style_kwds</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generic function to plot maps from GeoDataFrame.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        gdf (geopandas.GeoDataFrame): the GeoDataFrame we want to plot map from.</span>
+<span class="sd">        column (str): column name that we want to use in the plot.</span>
+<span class="sd">        categorical (bool): ``True`` if the column should be treated as a categorical variable,`False`` if not. Defaults to ``True``.</span>
+<span class="sd">        axis_scale (float): the scale to enlarge or shrink the axis. Defaults to ``1`` (no size adjustments).</span>
+<span class="sd">        legend_shift (float): how much to shift the legend box to the right. Defaults to ``1``. Larger number will shift the legend box further to the right. This parameter is used to prevent overlap of the legend box and the map.</span>
+<span class="sd">        figsize (tuple): the size of the figure. Defaults to ``(20, 20)``.</span>
+<span class="sd">        markersize (float): the size of the marker, only useful for GeoDataFrame that contains point geometries. Defaults to ``0.01``.</span>
+<span class="sd">        title (str): the title of the figure. Defaults to ``None``, in which case no title will be set.</span>
+<span class="sd">        cmap (str): the color map to use in the map plot. Defaults to ``&#39;gist_earth&#39;``. The color maps available in matplotlib can be found here: https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html</span>
+<span class="sd">        ax: (matplotlib.axes._subplots.AxesSubplot) matplotlib axis object to add plot to</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        matplotlib.axes._subplots.AxesSubplot: matplotlib plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+        <span class="n">units</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">units</span> <span class="o">!=</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;coordinate units can only be meters (m). Instead, the crs was: </span><span class="si">{</span><span class="n">gdf</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">gdf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">column</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+        <span class="n">categorical</span><span class="o">=</span><span class="n">categorical</span><span class="p">,</span>
+        <span class="n">legend</span><span class="o">=</span><span class="n">legend</span><span class="p">,</span>
+        <span class="n">markersize</span><span class="o">=</span><span class="n">markersize</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">style_kwds</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Shrink current axis by `axis_scale`</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">([</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">axis_scale</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">axis_scale</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+        <span class="n">leg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">leg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">leg</span><span class="o">.</span><span class="n">set_bbox_to_anchor</span><span class="p">((</span><span class="n">legend_shift</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;distance_x (meters)&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;distance_y (meters)&quot;</span><span class="p">)</span>
+    <span class="c1"># elif coord == &#39;latlong&#39;:</span>
+    <span class="c1">#     ax.set(xlabel=&#39;longitude (deg)&#39;, ylabel=&#39;latitude (deg)&#39;)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="make_choropleth_style_function"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.milton_maps.make_choropleth_style_function">[docs]</a><span class="k">def</span> <span class="nf">make_choropleth_style_function</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">navalue</span><span class="o">=</span><span class="s2">&quot;None&quot;</span>
+<span class="p">):</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">)</span>
+    <span class="n">attr_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">navalue</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+    <span class="n">colormap_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">attr_values</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">attr_values</span><span class="p">))</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">stylefunc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">navalue</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;fillColor&quot;</span><span class="p">:</span> <span class="n">colormap_dict</span><span class="p">[</span><span class="n">val</span><span class="p">],</span>
+            <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="n">colormap_dict</span><span class="p">[</span><span class="n">val</span><span class="p">],</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">stylefunc</span><span class="p">,</span> <span class="n">colormap_dict</span></div>
+
+
+<div class="viewcode-block" id="html_legend"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.milton_maps.html_legend">[docs]</a><span class="k">def</span> <span class="nf">html_legend</span><span class="p">(</span><span class="n">cmap_dict</span><span class="p">):</span>
+    <span class="n">table_html</span> <span class="o">=</span> <span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&lt;table&gt;</span>
+<span class="sd">  &lt;tr&gt;</span>
+<span class="sd">    &lt;th&gt;Value&lt;/th&gt;</span>
+<span class="sd">    &lt;th&gt;Color&lt;/th&gt;</span>
+<span class="sd">  &lt;/tr&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;&lt;tr&gt;&lt;td&gt;&lt;span style=&quot;font-family: monospace&quot;&gt;</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1">&lt;/span&gt;&lt;/td&gt; &lt;td&gt;&lt;span style=&quot;color: </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot;&gt;████████&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;&#39;</span>
+            <span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">cmap_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot;&lt;/table&gt;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">table_html</span></div>
+
+
+<span class="c1"># def add_basemap(ax, zoom, url=ctx.sources.ST_TONER_LITE):</span>
+<span class="c1">#     xmin, xmax, ymin, ymax = ax.axis()</span>
+<span class="c1">#     basemap, extent = ctx.bounds2img(xmin, ymin, xmax, ymax, zoom=zoom, source=url)</span>
+<span class="c1">#     ax.imshow(basemap, extent=extent, interpolation=&#39;bilinear&#39;)</span>
+<span class="c1">#     # restore original x/y limits</span>
+<span class="c1">#     ax.axis((xmin, xmax, ymin, ymax))</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting started &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="About this Project’s Structure" href="about.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            milton_maps
+              <img src="_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#software-prerequisites">Software Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-set-up">Environment set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-project-data">Get project data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproduce-the-project-results">Reproduce the project results</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Getting started</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/getting-started.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
+<p>This section will enable you to reproduce the project’s analyses and data from a fresh clone fo the repository.</p>
+<section id="software-prerequisites">
+<h2>Software Prerequisites<a class="headerlink" href="#software-prerequisites" title="Permalink to this heading"></a></h2>
+<p>This project uses <a class="reference external" href="https://python-poetry.org/docs/">poetry</a> to recreate an identical analytical software environment on each developer’s machine.  To bootstrap this environment, you will need an existing installation of</p>
+<ul class="simple">
+<li><p>Python version 3.10</p></li>
+<li><p>Poetry v1.5.1+</p></li>
+</ul>
+<p>For instructions to install these prerequisites for the first time, consult <a class="reference internal" href="about.html#first-time-setup"><span class="std std-ref">First Time Setup</span></a>.</p>
+</section>
+<section id="environment-set-up">
+<h2>Environment set up<a class="headerlink" href="#environment-set-up" title="Permalink to this heading"></a></h2>
+<p>Begin by cloning the model development repository</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:ahasha/milton_maps.git
+</pre></div>
+</div>
+<p>and change to the root directory of the project.  The command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>initialize
+</pre></div>
+</div>
+<p>will install the project’s software envionrment using poetry and install the project’s git hooks, which enforce consistent code style, linting, and <a class="reference external" href="https://dvc.org/doc/command-reference/install#description">dvc actions</a> to ensure data and code versions are synchronized.</p>
+<p>You then run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>shell
+</pre></div>
+</div>
+<p>to enter the virtual environment associated with the project.  Typing <code class="docutils literal notranslate"><span class="pre">exit</span></code> will exit the poetry shell, analogous to <code class="docutils literal notranslate"><span class="pre">deactivate</span></code> for a virtual environment.</p>
+</section>
+<section id="get-project-data">
+<h2>Get project data<a class="headerlink" href="#get-project-data" title="Permalink to this heading"></a></h2>
+<p>This project uses <a class="reference external" href="https://dvc.org">DVC</a> to store and track versioned data.  Similar to how git works, the DVC cache is a hidden storage folder (by default in
+<code class="docutils literal notranslate"><span class="pre">.dvc/cache</span></code>) containing all versions of all files and directories tracked by
+DVC.  It uses a <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/internal-files#structure-of-the-cache-directory">content-addressable structure</a> that allows only the current version of tracked data corresponding to the current state of the code in the git repository to be automatically loaded into the workspace.</p>
+<p>A shared dvc cache (analogous to a shared git remote on github.com) is located
+in Google Cloud storage at <code class="docutils literal notranslate"><span class="pre">gs://hasha-ds-portfolio-projects/milton_maps/</span></code>.</p>
+<p>As long as you can access this cloud bucket from your current working environment,
+you can populate your local cache (analogous to running <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> to get the latest
+version of a codebase) by running</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dvc<span class="w"> </span>pull
+</pre></div>
+</div>
+<p>from any directory inside the project.</p>
+</section>
+<section id="reproduce-the-project-results">
+<h2>Reproduce the project results<a class="headerlink" href="#reproduce-the-project-results" title="Permalink to this heading"></a></h2>
+<p>Once the initial setup steps are complete, you can run the analysis pipeline to create the
+notebook data inputs with the <a class="reference external" href="https://dvc.org/doc/command-reference/repro"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code></a> command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dvc<span class="w"> </span>repro
+</pre></div>
+</div>
+<p>generates pipeline results by executing the sequence of stages defined in dvc.yaml to calculate all outputs referenced in <code class="docutils literal notranslate"><span class="pre">dvc.lock</span></code>.  Stages are checked to determine which ones need to run – if the stage output checksum is referenced in <code class="docutils literal notranslate"><span class="pre">dvc.lock</span></code> and already exists in the cache or the workspace, the stage is skipped.</p>
+<p>If you wish to recalculate pipeline outputs to verify that they match reported results, run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dvc<span class="w"> </span>repro<span class="w"> </span>-f<span class="w"> </span>--no-commit
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag tells DVC to recalculate all pipeline stages, even if there are no changes to their input dependencies.  The <code class="docutils literal notranslate"><span class="pre">--no-commit</span></code> flag tells DVC not to store the outputs of this execution in the cache.  If the pipeline has large outputs, a single byte difference will cause its checksum to change and DVC will add it permanently to the cache.  With many binary data formats, you can get a different file checksum even if the data contents are functionally identical.  <code class="docutils literal notranslate"><span class="pre">--no-commit</span></code> will enable you to verify the results have been appropriately reproduced without bloating the cache with functionally identical data files.  If later you do want to add the results to the cache, you can do so by running <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">comit</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="about.html" class="btn btn-neutral float-left" title="About this Project’s Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

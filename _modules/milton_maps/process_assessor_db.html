@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>milton_maps.process_assessor_db &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            milton_maps
+              <img src="../../_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">milton_maps.process_assessor_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for milton_maps.process_assessor_db</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Usage: milton_maps process_assessor_db INPUT LAYER OUTPUT</span>
+
+<span class="sd">Arguments:</span>
+<span class="sd">  INPUT       path to GDB file containing assessor DB in layer LAYER</span>
+<span class="sd">  LAYER       layer within GDB file containing asessor DB</span>
+<span class="sd">  OUTPUT      output path to write processed Assessor DB as a pickled dataframe</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">from</span> <span class="nn">fiona.errors</span> <span class="kn">import</span> <span class="n">DriverError</span>
+
+<span class="kn">import</span> <span class="nn">milton_maps</span> <span class="k">as</span> <span class="nn">mm</span>
+
+
+<div class="viewcode-block" id="process_assessor_db"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.process_assessor_db.process_assessor_db">[docs]</a><span class="k">def</span> <span class="nf">process_assessor_db</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">assessor_df</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2"> does not contain the layer </span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">DriverError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+    <span class="c1"># LOC_ID is globally unique, but is sometimes missing.  TOWN_ID + PROP_ID is guaranteed to be unique,</span>
+    <span class="c1"># so we replace LOC_ID with the combination of those two fields when missting.</span>
+    <span class="n">assessor_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">assessor_df</span><span class="o">.</span><span class="n">LOC_ID</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span>
+        <span class="n">assessor_df</span><span class="o">.</span><span class="n">TOWN_ID</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="n">assessor_df</span><span class="o">.</span><span class="n">PROP_ID</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Clean up multiple spaces in site address field</span>
+    <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;SITE_ADDR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;SITE_ADDR&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+
+    <span class="c1"># Append human-readable fields</span>
+    <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;USE_DESCRIPTION&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mm</span><span class="o">.</span><span class="n">transform_use_codes</span><span class="p">(</span><span class="n">assessor_df</span><span class="o">.</span><span class="n">USE_CODE</span><span class="p">)</span>
+    <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;IS_RESIDENTIAL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;USE_CODE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">mm</span><span class="o">.</span><span class="n">RESIDENTIAL_USE_CODES</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/processed/town_ids.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">town_ids_map</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;TOWN&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;TOWN_ID&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">town_ids_map</span><span class="p">)</span>
+    <span class="c1"># Check all IDs were mapped</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">assessor_df</span><span class="p">[</span><span class="s2">&quot;TOWN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
+
+    <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">assessor_df</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span></div>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;input_path&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;layer&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;output_path&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Console script for processing assessor DB&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;gdb&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input file must be a GDB file, got </span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;pkl&quot;</span><span class="p">:</span>
+        <span class="n">output_path</span> <span class="o">+=</span> <span class="s2">&quot;.pkl&quot;</span>
+    <span class="n">process_assessor_db</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">output_path</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="p">))</span>  <span class="c1"># pragma: no cover</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

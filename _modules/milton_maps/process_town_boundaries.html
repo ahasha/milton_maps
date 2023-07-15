@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>milton_maps.process_town_boundaries &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            milton_maps
+              <img src="../../_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Getting started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">milton_maps.process_town_boundaries</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for milton_maps.process_town_boundaries</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Usage: milton_maps process_town_boundaries INPUT OUTPUT</span>
+
+<span class="sd">Arguments:</span>
+<span class="sd">  INPUT       path to GDB file containing assessor DB</span>
+<span class="sd">  OUTPUT      output path to write processed Assessor DB as a pickled dataframe</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">MultiPolygon</span>
+
+
+<div class="viewcode-block" id="process_town_boundaries"><a class="viewcode-back" href="../../milton_maps.html#milton_maps.process_town_boundaries.process_town_boundaries">[docs]</a><span class="k">def</span> <span class="nf">process_town_boundaries</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+    <span class="n">towns</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="n">towns</span><span class="o">.</span><span class="n">TOWN_ID</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2"> unique towns in the dataset, but the dataframe has shape </span><span class="si">{</span><span class="n">towns</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, so there are multiple rows per town&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The raw dataset contains one row for each disconnected region of a town. For our purposes, we want to merge these into a single multipolygon per town</span>
+    <span class="n">town_boundaries_series</span> <span class="o">=</span> <span class="n">towns</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;TOWN_ID&quot;</span><span class="p">)[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">town_attributes</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">towns</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;TOWN_ID&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="n">towns</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;TOWN_ID&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># There are 351 towns in Massachusetts.  Validate the data against this fact.</span>
+    <span class="k">assert</span> <span class="n">town_attributes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">351</span>
+
+    <span class="c1"># Join multipolygon boundaries to attribute dataframe</span>
+    <span class="n">town_boundaries</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">town_boundaries_series</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">town_attributes</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">set_crs</span><span class="p">(</span><span class="n">towns</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;SHAPE_AREA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">area</span>  <span class="c1"># Square Meters</span>
+    <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;ACRES&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;SHAPE_AREA&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">4046.86</span>
+    <span class="p">)</span>  <span class="c1"># Square meters per acre</span>
+    <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;SQUARE_MIL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;SHAPE_AREA&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">2.59e6</span>
+    <span class="p">)</span>  <span class="c1"># Square meters per square mile</span>
+
+    <span class="c1"># Sanity checks</span>
+    <span class="c1"># 1. Check that &quot;TOWN&quot; has not been dropped</span>
+    <span class="c1">#   (it should be a uniquely associated with TOWN_ID) and save the</span>
+    <span class="c1">#   TOWN_ID=&gt;TOWN mapping</span>
+    <span class="k">assert</span> <span class="s2">&quot;TOWN&quot;</span> <span class="ow">in</span> <span class="n">town_boundaries</span><span class="o">.</span><span class="n">columns</span>
+
+    <span class="c1"># 2. The Multipolygon&#39;s areas should very closely match the sum of shapefile areas over each TOWN_ID</span>
+    <span class="n">direct_sum_old_areas</span> <span class="o">=</span> <span class="n">towns</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;TOWN_ID&quot;</span><span class="p">)[</span><span class="s2">&quot;SHAPE_AREA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;SHAPE_AREA&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">direct_sum_old_areas</span><span class="p">)</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+        <span class="n">direct_sum_old_areas</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">1e-9</span>
+
+    <span class="c1"># 3. We should have one row per town and 19 columns</span>
+    <span class="k">assert</span> <span class="n">town_boundaries</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">351</span><span class="p">,</span> <span class="mi">19</span><span class="p">)</span>
+
+    <span class="c1"># Save consolidated shapefile</span>
+    <span class="n">town_boundaries</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;ESRI Shapefile&quot;</span><span class="p">)</span>
+    <span class="c1"># Save town_id =&gt; town name mapping for downstream use.  Note json format converts integer keys to strings.</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/processed/town_ids.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">town_boundaries</span><span class="p">[</span><span class="s2">&quot;TOWN&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">f</span><span class="p">)</span></div>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;input_path&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">argument</span><span class="p">(</span><span class="s2">&quot;output_path&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Console script for processing assessor DB&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">input_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;shp&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input file must be a SHP file, got </span><span class="si">{</span><span class="n">input_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">output_path</span>
+    <span class="k">if</span> <span class="n">output_path</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;zip&quot;</span><span class="p">:</span>
+        <span class="n">output_file</span> <span class="o">+=</span> <span class="s2">&quot;zip&quot;</span>
+    <span class="n">process_town_boundaries</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">argv</span><span class="p">))</span>  <span class="c1"># pragma: no cover</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Milton Maps &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Open Space Analysis" href="open_space_analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            milton_maps
+              <img src="_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Milton Maps</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="milton-maps">
+<h1>Milton Maps<a class="headerlink" href="#milton-maps" title="Permalink to this heading"></a></h1>
+<p>Analysis of GIS geospatial data sources for Milton, MA in transparent and reproducible Python.
+Check out the source code on <a class="reference external" href="https://github.com/ahasha/milton_maps">GitHub</a></p>
+<section id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this heading"></a></h2>
+<p>This repository contains an example analysis combining several publicly available geospatial datasets
+pertaining to the town of Milton, MA and surrounding communities.  I had two goals in putting this
+together:</p>
+<ol class="arabic simple">
+<li><p>Build awareness in the Milton community of civic organizations of available sources of map data and how they might be used to answer questions of local interest.  Provide a starting foundation for anyone in town who may want to work with this data in Python.</p></li>
+<li><p>Provide an example of a Python project structure that is portable, transparent and reproducibile using modern tools for data versioning, document generation, and python environment management. Namely, <a class="reference external" href="https://dvc.org">dvc</a> for data version control, <a class="reference external" href="https://www.sphinx-doc.org/en/master/">sphinx</a> for document generation, and <a class="reference external" href="https://python-poetry.org/docs/">poetry</a> for environment management.</p></li>
+</ol>
+</section>
+<section id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this heading"></a></h2>
+<p>The analyses in this project use the following public GIS data sets</p>
+<section id="open-space-parcels">
+<h3>Open space parcels<a class="headerlink" href="#open-space-parcels" title="Permalink to this heading"></a></h3>
+<p>A shapefile of open and recreational space parcles in Massachusetts was obtained from <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-protected-and-recreational-openspace#downloads-">the mass.gov website</a></p>
+<p>It is provided with the following disclaimer:</p>
+<blockquote>
+<div><p>These data are very useful for most statewide and regional planning purposes. However, they are not a legal record of ownership, and the user should understand that parcel representations are generally not based on property surveys.</p>
+</div></blockquote>
+<p>Data documentation is currently <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-protected-and-recreational-openspace">provided online</a> and a <a class="reference internal" href="#references/MassGIS_Openspace.pdf"><span class="xref myst">PDF copy</span></a> of the website as it was accessed when the data was downloaded is saved locally in case the website is moved or modified.</p>
+<p>The shapefile data can be re-downloaded from the mass.gov website by running</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>refresh-openspace-data
+</pre></div>
+</div>
+</section>
+<section id="tax-parcels">
+<h3>Tax Parcels<a class="headerlink" href="#tax-parcels" title="Permalink to this heading"></a></h3>
+<p>Downloaded from <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels">mass.gov property tax parcel</a></p>
+<p>The files are offered with the following disclaimer:</p>
+<blockquote>
+<div><p>Assessor’s parcel mapping is a representation of property boundaries, not an authoritative source. The authoritative record of property boundaries is recorded at the registries of deeds. A legally authoritative map of property boundaries can only be produced by a professional land surveyor.</p>
+</div></blockquote>
+<p>Data documentation is currently <a class="reference external" href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels%3E">provided online</a> and a <a class="reference internal" href="#references/MassGIS_PropertyTaxParcels.pdf"><span class="xref myst">PDF copy</span></a> of the website as it was accessed when the data is saved locally in case the website is moved or modified.</p>
+<p>Full data dictionary and other documentation are provided in the <a class="reference external" href="https://www.mass.gov/doc/standard-for-digital-parcels-and-related-data-sets-version-3/download">Parcel Standard</a>. A <a class="reference internal" href="#references/Mass_Parcel_Standard_Version3.pdf"><span class="xref myst">PDF copy</span></a> of the standard is saved locally in case the website is moved or modified.</p>
+</section>
+<section id="mass-dot-crash-data">
+<h3>Mass DOT Crash Data<a class="headerlink" href="#mass-dot-crash-data" title="Permalink to this heading"></a></h3>
+<p>A crash data report for Milton, MA was requested from the Department of Transportation (MassDOT)
+<a class="reference external" href="https://apps.impact.dot.state.ma.us/cdp/home">IMPACT Portal</a> using the <a class="reference external" href="https://apps.impact.dot.state.ma.us/cdp/extract">Data Extraction</a> tool.  Crash data for the years 2016-2022 in Milton, MA were requested via the web page, and a personalized download link was emailed shortly thereafter.  Data documentation provided with the download link is saved in
+<code class="docutils literal notranslate"><span class="pre">references/MassDOT_crashdata_support_information.pdf</span></code>.</p>
+<p>The data is provided with the following disclaimer.</p>
+<blockquote>
+<div><p>MassDOT makes no representation as to the accuracy, adequacy, reliability, availability or completeness of the crash records or the data collected from them and is not responsible for any errors or omissions in such records or data. Under no circumstance will MassDOT have any liability for any loss or damage incurred by any party as a result of the use of the crash records or the data collected from them. Furthermore, the data contained in the web-based cras report tool are not an official record of what transpired in a particular crash or for a particular crash type. If a user is interested in an official copy of a crash report, contact the</p>
+</div></blockquote>
+<blockquote>
+<div><p>Registry (http://www.mass.gov/rmv/).</p>
+</div></blockquote>
+<blockquote>
+<div><p>The City of Boston Police Department may be contacted directly for official copies of crash reports and for crash data pertaining to the City of Boston. In addition, any crash records or data provided for the years 2020 and later are subject to change at any time and are not to be considered up-to-date or complete. As such, open years’ of crash data are for informational purposes only and should not be used for analysis.</p>
+</div></blockquote>
+<blockquote>
+<div><p>The data posted on this website, including crash records and other reports, are collected for the purpose of identifying, evaluating or planning the safety enhancement of potential crash sites, hazardous roadway conditions or railway-highway crossings. Under federal law, this
+information is not subject to discovery and cannot be admitted into evidence in any federal or state court proceeding or considered for other purposes in any action for damages that involves the sites mentioned in these records (see 23 USC, Section 409).</p>
+</div></blockquote>
+</section>
+</section>
+<section id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this heading"></a></h2>
+<p>This package was initialized with <a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a></p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="open_space_analysis.html#Load-cleaned-and-processed-input-files">Load cleaned and processed input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="open_space_analysis.html#Data-review">Data review</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="open_space_analysis.html#Open-space-maps">Open space maps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="open_space_analysis.html#Calculate-distribution-of-distance-to-openspace-for-residential-parcels">Calculate distribution of distance to openspace for residential parcels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="open_space_analysis.html#School-Building-candidate-parcels">School Building candidate parcels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="open_space_analysis.html#How-much-openspace-does-Milton-have?-How-much-is-in-conservation-status?">How much openspace does Milton have? How much is in conservation status?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this Project’s Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#motivations-and-guiding-ideas">Motivations and Guiding Ideas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about.html#reproducible-history-of-all-your-analyses-and-results">Reproducible history of all your analyses and results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#end-to-end-reproducible-pipelines">End-to-end reproducible pipelines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#optimize-for-faster-iterations">Optimize for faster iterations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#notebooks-are-for-exploration-and-communication">Notebooks are for exploration and communication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#reproducible-environment-installation-with-poetry">Reproducible environment installation with Poetry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#consistency-and-familiarity">Consistency and familiarity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#first-time-setup">First-time Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about.html#python-pyenv-and-poetry">Python, Pyenv, and Poetry</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#user-guide">User Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about.html#project-organization">Project Organization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#dvc-how-to">DVC How To…</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="about.html#check-whether-code-and-data-are-aligned-dvc-status">Check whether code and data are aligned: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#align-code-and-previously-calculated-data-dvc-checkout">Align code and (previously-calculated) data: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">checkout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#define-the-pipeline-dag">Define the pipeline DAG</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="about.html#add-a-stage-to-the-model-pipeline">Add a stage to the model pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#calculate-or-reproduce-pipeline-outputs-dvc-repro">Calculate (or reproduce) pipeline outputs: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#define-pipeline-parameters">Define pipeline parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#run-one-or-more-pipelines-with-varying-parameters-dvc-exp-run">Run one or more pipelines with varying parameters: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#record-changes-to-code-and-data-dvc-commit">Record changes to code and data: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">commit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#manage-remote-storage-endpoints-dvc-remote">Manage remote storage endpoints: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">remote</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#write-or-get-data-from-remote-storage-dvc-push-pull">Write or get data from remote storage: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">push|pull</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#manually-track-externally-created-files-dvc-add">Manually track externally-created files: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">add</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#review-results-metrics-and-their-changes-dvc-metrics-show-diff">Review results metrics and their changes: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">metrics</span> <span class="pre">show|diff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="about.html#compare-results-of-two-different-pipeline-runs-or-experiments">Compare results of two different pipeline runs or experiments</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#dvc-internal-directories-and-files">DVC internal directories and files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#dvc-pre-commit-hooks">DVC pre-commit hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#poetry-how-to">Poetry How To…</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="about.html#add-software-dependencies-to-the-project">Add software dependencies to the project</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#documentation-how-to">Documentation How To…</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="about.html#build-the-docs">Build the docs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#use-advanced-markup-supported-by-myst-parser">Use advanced markup supported by MyST Parser</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="about.html#admonitions">Admonitions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="about.html#equations">Equations</a></li>
+<li class="toctree-l5"><a class="reference internal" href="about.html#footnotes">Footnotes</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="about.html#serve-the-documentation-website">Serve the documentation website</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#software-prerequisites">Software Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#environment-set-up">Environment set up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#get-project-data">Get project data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html#reproduce-the-project-results">Reproduce the project results</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="open_space_analysis.html" class="btn btn-neutral float-right" title="Open Space Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide &mdash; milton_maps  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="https://unpkg.com/mermaid@9.4.0/dist/mermaid.min.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            milton_maps
+              <img src="_static/color_logo_with_background.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="open_space_analysis.html">Open Space Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="construction_years.html">Construction Years Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crash_analysis.html">Milton Crash Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About this Project’s Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">milton_maps</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">User Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/user-guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading"></a></h1>
+<section id="project-organization">
+<h2>Project Organization<a class="headerlink" href="#project-organization" title="Permalink to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── Makefile                   &lt;- Makefile with project operations like `make test` or `make docs`
+├── README.md                  &lt;- The top-level README for developers using this project.
+├── data
+│   ├── raw                    &lt;- The initial raw data extract from the data warehouse.
+│   ├── interim                &lt;- Intermediate data that has been transformed but is not used directly for modeling or evaluation.
+│   ├── processed              &lt;- The final, canonical data sets for modeling and evaluation.
+│   └── external               &lt;- Data from third party sources.
+│
+├── docs                       &lt;- Documentation templates guiding you through documentation expectations; Structured
+│   │                             as a sphinx project to automate generation of formatted documents; see sphinx-doc.org for details
+│   ├── figures                &lt;- Generated graphics and figures to be used in reporting
+│   └── model_documentation    &lt;- Markdown templates for model documentation and model risk management.
+│   └── _build                 &lt;- Generated documentation as HTML, PDF, LaTeX, etc.  Do not edit this directory manually.
+│
+├── models                     &lt;- Trained and serialized models, model predictions, or model summaries
+│
+├── notebooks                  &lt;- Jupyter notebooks. Naming convention is a number (for ordering),
+│                                 the creator&#39;s initials, and a short `-` delimited description, e.g.
+│                                 `1.0-jqp-initial-data-exploration.ipynb`.
+├── references                 &lt;- Data dictionaries, manuals, important papers, etc
+│
+├── pyproject.toml             &lt;- Project configuration file; see [`setuptools documentation`](https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html)
+│
+├── poetry.lock                &lt;- The requirements file for reproducing the analysis environment, e.g.
+│                                 generated with `poetry install`; see https://python-poetry.org/docs/
+│
+├── .pre-commit-config.yaml    &lt;- Default configuration for pre-commit hooks enforcing style and formatting standards
+│                                 and use of a linter (`isort`, `brunette`, and `flake8`)
+│
+├── setup.cfg                  &lt;- Project packaging and style configuration
+│
+├── setup.py                   &lt;- Project installation script; makes project pip installable (pip install -e .) so 
+│                                 project module can be imported
+│
+├── .dvc                       &lt;- Data versioning cache and configuration using dvc; see https://dvc.org
+│   └── config                 &lt;- YAML formatted configuration file for dvc project; defines default remote data storage cache location;
+│
+├── tests                      &lt;- Automated test scripts; 
+│   └── data                   &lt;- tests for data download and/or generation scripts
+│   │   └── test_make_dataset.py
+│   │
+│   └── features               &lt;- tests for feature generation scripts 
+│   │   └── test_build_features.py
+│   │
+│   ├── models                 &lt;- tests for model training and prediction scripts
+│   │   │                         
+│   │   ├── test_predict_model.py
+│   │   └── test_train_model.py
+│   │
+│   └── visualization           &lt;- Scripts to create exploratory and results oriented visualizations
+│       └── test_visualize.py    
+│
+├── milton_maps                &lt;- Source code for use in this project.
+│   │
+│   ├── __init__.py                               &lt;- Makes milton_maps a Python module
+│   │
+│   ├── data                                      &lt;- Scripts to download or generate data
+│   │   ├── make_dataset.py                       &lt;- Utility CLI script to extract data from database tables to local parquet files.
+
+│   │
+│   ├── features                                  &lt;- Scripts to turn raw data into features for modeling
+│   │   └── build_features.py
+│   │
+│   ├── models                                    &lt;- Scripts to train models and then use trained models to make
+│   │   │                                            predictions. (write outputs to `PROJECT_ROOT/models`
+│   │   ├── predict_model.py
+│   │   └── train_model.py
+│   │
+│   └── visualization                             &lt;- Scripts to create exploratory and results oriented visualizations;
+│       └── visualize.py                             (write outputs to `PROJECT_ROOT/reports/figures`
+
+</pre></div>
+</div>
+</section>
+<section id="dvc-how-to">
+<h2>DVC How To…<a class="headerlink" href="#dvc-how-to" title="Permalink to this heading"></a></h2>
+<p>Of the tools incorporated in this project template, DVC is likely the least familiar to the typical Data Scientist and has
+more of a learning curve to use effectively.  The project has <a class="reference external" href="https://dvc.org/doc/user-guide">good documentation</a> which is
+well worth reviewing in greater detail.</p>
+<p>Below are a few of the most common DVC commands you will use frequently during model development, discussed in the order that they’re typically used in a standard workflow. Consult the <a class="reference external" href="https://dvc.org/doc/command-reference">DVC command reference</a> for
+a full listing of commands and greater detail.</p>
+<section id="check-whether-code-and-data-are-aligned-dvc-status">
+<h3>Check whether code and data are aligned: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">status</span></code><a class="headerlink" href="#check-whether-code-and-data-are-aligned-dvc-status" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/status"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">status</span></code></a> shows changes in the project pipelines, as well as file mismatches either between the cache and workspace, or between the cache and remote storage.  Use it to diagnose whether data and code are aligned and see which stages of the pipeline will run if <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code> is called.</p>
+</section>
+<section id="align-code-and-previously-calculated-data-dvc-checkout">
+<h3>Align code and (previously-calculated) data: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">checkout</span></code><a class="headerlink" href="#align-code-and-previously-calculated-data-dvc-checkout" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/checkout"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">checkout</span></code></a> updates DVC-tracked files and directories in the workspace based on current <code class="docutils literal notranslate"><span class="pre">dvc.lock</span></code> and <code class="docutils literal notranslate"><span class="pre">.dvc</span></code> files.  This command is usually needed after git checkout, git clone, or any other operation that changes the current dvc.lock or .dvc files in the project (though the installed git hooks frequently automate this step). It restores the versions of all DVC-tracked data files and directories referenced in DVC metadata files from the cache to the workspace.</p>
+</section>
+<section id="define-the-pipeline-dag">
+<h3>Define the pipeline DAG<a class="headerlink" href="#define-the-pipeline-dag" title="Permalink to this heading"></a></h3>
+<p>You define the Directed Acyclic Graph (DAG) of your pipeline using the <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/dvcyaml-files#dvcyaml"><code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code></a>. The individual scripts or tasks in the pipeline are called “stages”.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> defines a list of stages, the commands required to run them, their input data and parameter dependencies, and their output artifacts, metrics, and plots.</p>
+<p>dvc.yaml uses the YAML 1.2 format and a human-friendly schema explained in detail <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/dvcyaml-files">here</a>. DVC provides CLI commands to edit the <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> file, but it is generally easiest to edit it manually.</p>
+<p><code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> files are designed to be small enough so you can easily version them with Git along with other DVC files and your project’s code.</p>
+<section id="add-a-stage-to-the-model-pipeline">
+<h4>Add a stage to the model pipeline<a class="headerlink" href="#add-a-stage-to-the-model-pipeline" title="Permalink to this heading"></a></h4>
+<p>Let’s look at a smaple stage. It depends on a script file it runs as well as on a raw data input:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prepare</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source src/cleanup.sh</span>
+<span class="w">    </span><span class="nt">deps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/cleanup.sh</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/raw.csv</span>
+<span class="w">    </span><span class="nt">outs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/clean.csv</span>
+</pre></div>
+</div>
+<p>A new stage can be added to the model pipeline DAG in one of two ways:</p>
+<ol class="arabic simple">
+<li><p>Directly edit the pipeline in <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> files. (recommended)</p></li>
+<li><p>Use the CLI command <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">stage</span> <span class="pre">add</span></code> – a limited command-line interface to setup
+pipelines.  For example:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dvc<span class="w"> </span>stage<span class="w"> </span>add<span class="w"> </span>--name<span class="w"> </span>train<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--deps<span class="w"> </span>src/model.py<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--deps<span class="w"> </span>data/clean.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>--outs<span class="w"> </span>data/predict.dat<span class="w"> </span><span class="se">\</span>
+<span class="w">                </span>python<span class="w"> </span>src/model.py<span class="w"> </span>data/clean.csv
+</pre></div>
+</div>
+<p>would add the following to <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">prepare</span><span class="p">:</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">train</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python src/model.py data/model.csv</span>
+<span class="w">    </span><span class="nt">deps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">src/model.py</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/clean.csv</span>
+<span class="w">    </span><span class="nt">outs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/predict.dat</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>One advantage of using <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">stage</span> <span class="pre">add</span></code> is that it will verify the validity of
+the arguments provided (otherwise stage definition won’t be checked until execution).
+A disadvantage is that some advanced features such as templating are not available this way.</p>
+</div>
+</section>
+</section>
+<section id="calculate-or-reproduce-pipeline-outputs-dvc-repro">
+<h3>Calculate (or reproduce) pipeline outputs: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code><a class="headerlink" href="#calculate-or-reproduce-pipeline-outputs-dvc-repro" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/repro"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code></a> reproduces complete or partial pipelines by running their stage commands as needed in the correct order. This is similar to <code class="docutils literal notranslate"><span class="pre">make</span></code> in software build automation, in that DVC captures “build requirements” (stage dependencies) and determines which stages need to run based on whether there outputs are “up to date”.  Unlike <code class="docutils literal notranslate"><span class="pre">make</span></code>, it caches the pipeline’s outputs along the way.</p>
+</section>
+<section id="define-pipeline-parameters">
+<h3>Define pipeline parameters<a class="headerlink" href="#define-pipeline-parameters" title="Permalink to this heading"></a></h3>
+<p>Parameters are any values used inside your code to tune analytical results. For example, a random forest classifier may require a maximum depth value. Machine learning experimentation often involves defining and searching hyperparameter spaces to improve the resulting model metrics.</p>
+<p>Your source code should read params from structured parameters files (<code class="docutils literal notranslate"><span class="pre">params.yaml</span></code> by default). You can use the <code class="docutils literal notranslate"><span class="pre">params</span></code> field of <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> to tell DVC which parameter each stage depends on. When a param value has changed, <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code> and <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code> invalidate any stages that depend on it, and reproduces them.</p>
+</section>
+<section id="run-one-or-more-pipelines-with-varying-parameters-dvc-exp-run">
+<h3>Run one or more pipelines with varying parameters: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code><a class="headerlink" href="#run-one-or-more-pipelines-with-varying-parameters-dvc-exp-run" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/exp/run"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code></a> runs or resumes a DVC experiment based on a DVC pipeline.  DVC experiment tracking allows tracking of results from multiple runs of the pipeline with varying parameter values (as defined in <code class="docutils literal notranslate"><span class="pre">params.yaml</span></code>) without requiring each run to be associated with its own git commit<a class="footnote-reference brackets" href="#bloat" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.  It also runs the experiment using an isolated copy of the workspace, so that edits you make
+while the experiment is running will not impact results.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>The experiment tracking feature in DVC is dangerous/confusing to use with a dirty git repository.  DVC creates a copy of the experiment’s workspace in .dvc/tmp/exps/ and runs it there.  Git-ignored files/dirs are excluded from queued/temp runs to avoid committing unwanted files into Git (e.g. once successful experiments are persisted).  Under some circumstances, unstaged, git-tracked files are automatically staged and included in the isolated workspace.  The expected behavior isn’t 100% clear in the documentation, so I just avoid using <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code> in a dirty repo.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Rule of thumb: If you want to run the pipeline to test whether uncommited changes are
+correct and ready to be committed, use <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code>.  <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">exp</span> <span class="pre">run</span></code> is best used
+with a clean repository where you want to “experiment” with results from parameter changes,
+not code changes.</p>
+</div>
+<p>Visit the <a class="reference external" href="https://dvc.org/doc/user-guide/experiment-management">dvc documentation</a> and their helpful <a class="reference external" href="https://dvc.org/doc/start/experiments">hands-on tutorial</a> to learn about the experiment-tracking features offered by DVC.</p>
+</section>
+<section id="record-changes-to-code-and-data-dvc-commit">
+<h3>Record changes to code and data: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">commit</span></code><a class="headerlink" href="#record-changes-to-code-and-data-dvc-commit" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/commit"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">commit</span></code></a> records changes to files or directories tracked by DVC. Stores the current contents of files and directories tracked by DVC in the cache, and updates <code class="docutils literal notranslate"><span class="pre">dvc.lock</span></code> and <code class="docutils literal notranslate"><span class="pre">.dvc</span></code> metadata files as needed. This forces DVC to accept any changed contents of tracked data currently in the workspace. <a class="footnote-reference brackets" href="#very-useful-when" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+</section>
+<section id="manage-remote-storage-endpoints-dvc-remote">
+<h3>Manage remote storage endpoints: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">remote</span></code><a class="headerlink" href="#manage-remote-storage-endpoints-dvc-remote" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/remote"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">remote</span></code></a> provides a set of commands to set up and manage remote storage: add, default, list, modify, remove, and rename.</p>
+</section>
+<section id="write-or-get-data-from-remote-storage-dvc-push-pull">
+<h3>Write or get data from remote storage: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">push|pull</span></code><a class="headerlink" href="#write-or-get-data-from-remote-storage-dvc-push-pull" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/push"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">push</span></code></a> uploads tracked files or directories to remote storage based on the current <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.dvc</span></code> files.</p>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/pull"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">pull</span></code></a> download tracked files or directories from remote storage based on the current <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.dvc</span></code> files, and make them visible in the workspace.</p>
+</section>
+<section id="manually-track-externally-created-files-dvc-add">
+<h3>Manually track externally-created files: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">add</span></code><a class="headerlink" href="#manually-track-externally-created-files-dvc-add" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/add"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">add</span></code></a> tells DVC to track versions of data that is not created by the DVC pipeline in <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code>. DVC allows tracking of such datasets using .dvc files as lightweight pointers to your data in the cache. The dvc add command is used to track and update your data by creating or updating .dvc files, similar to the usage of <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code> to add source code updates to git.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If a file is generated as a stage output of <code class="docutils literal notranslate"><span class="pre">dvc.yaml</span></code>, you <strong>do not</strong> need to run <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">add</span></code> to track changes.  <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">repro</span></code> does this for you.</p>
+</div>
+</section>
+<section id="review-results-metrics-and-their-changes-dvc-metrics-show-diff">
+<h3>Review results metrics and their changes: <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">metrics</span> <span class="pre">show|diff</span></code><a class="headerlink" href="#review-results-metrics-and-their-changes-dvc-metrics-show-diff" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="https://dvc.org/doc/command-reference/metrics"><code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">metrics</span></code></a> provides a set of commands to display and compare metrics: show, and diff.</p>
+<p>In order to follow the performance of machine learning experiments, DVC has the ability to mark stage outputs or other files as metrics. These metrics are project-specific floating-point or integer values e.g. AUC, ROC, false positives, etc.</p>
+<p>In pipelines, metrics files are typically generated by user data processing code, and are tracked using the -m (–metrics) and -M (–metrics-no-cache) options of <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">stage</span> <span class="pre">add</span></code></p>
+<section id="compare-results-of-two-different-pipeline-runs-or-experiments">
+<h4>Compare results of two different pipeline runs or experiments<a class="headerlink" href="#compare-results-of-two-different-pipeline-runs-or-experiments" title="Permalink to this heading"></a></h4>
+<p>It’s a good idea to use git tags to identify project revisions that you will want
+to share with others and/or reference in discussions.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>my-great-experiment<span class="w"> </span><span class="o">[</span>revision<span class="o">]</span>
+</pre></div>
+</div>
+<p>creates an annotated tag at the given revision.  If <code class="docutils literal notranslate"><span class="pre">revision</span></code> is left out, HEAD is used.</p>
+<p>You can compare pipeline metrics across any two git revisions with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>dvc<span class="w"> </span>metrics<span class="w"> </span>diff<span class="w"> </span><span class="o">[</span>rev1<span class="o">]</span><span class="w"> </span><span class="o">[</span>rev2<span class="o">]</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">rev1</span></code> and <code class="docutils literal notranslate"><span class="pre">rev2</span></code> are any git commit hash, tag, or branch name.</p>
+</section>
+</section>
+<section id="dvc-internal-directories-and-files">
+<h3>DVC internal directories and files<a class="headerlink" href="#dvc-internal-directories-and-files" title="Permalink to this heading"></a></h3>
+<p>You shouldn’t need to muck around with DVC’s internals to use the tool successfully, but having a high-level understanding of how the tool works can increase your confidence and help you solve problems that inevitably arise. See the <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/internal-files">DVC documentation</a> for more detail.</p>
+<p>DVC creates a hidden directory in your project at <code class="docutils literal notranslate"><span class="pre">.dvc/</span></code> relative to your project root folder, which contains the directories and files needed for DVC operation.  The cache structure is similar to the structure of a <code class="docutils literal notranslate"><span class="pre">.git/</span></code> cache folder in a git repository, if that’s something your familiar with.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/config</span></code>: This is the default <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/configuration">DVC configuration</a> file. It can be edited by hand or with the <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">config</span></code> command.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/config.local</span></code>: This is an optional Git-ignored configuration file, that will overwrite options in <code class="docutils literal notranslate"><span class="pre">.dvc/config</span></code>. This is useful when you need to specify sensitive values (secrets) which should not reach the Git repo (credentials, private locations, etc). This config file can also be edited by hand or with <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">config</span> <span class="pre">--local</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/cache</span></code>: Default location of the cache directory. By default, the data files and directories in the workspace will only contain links to the data files in the cache. See <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">config</span> <span class="pre">cache</span></code> for related configuration options, including changing its location.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Note that DVC includes the cache directory in <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> during initialization. No data tracked by DVC should ever be pushed to the Git repository, only the DVC files (<code class="docutils literal notranslate"><span class="pre">*.dvc</span></code> or <code class="docutils literal notranslate"><span class="pre">dvc.lock</span></code>) that are needed to locate or reproduce that data.</p>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/cache/runs</span></code>: Default location of the <a class="reference external" href="https://dvc.org/doc/user-guide/project-structure/internal-files#run-cache">run cache</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/plots</span></code>: Directory for
+<a class="reference external" href="https://dvc.org/doc/user-guide/experiment-management/visualizing-plots#plot-templates-data-series-only">plot templates</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp</span></code>: Directory for miscellaneous temporary files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp/updater</span></code>: This file is used to store the latest available version of
+DVC. It’s used to remind the user to upgrade when the installed version is
+behind.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp/updater.lock</span></code>: Lock file for <code class="docutils literal notranslate"><span class="pre">.dvc/tmp/updater</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp/lock</span></code>: Lock file for the entire DVC project</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp/rwlock</span></code>: JSON file that contains read and write locks for specific
+dependencies and outputs, to allow safely running multiple DVC commands in
+parallel</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.dvc/tmp/exps</span></code>: This directory will contain workspace copies used for
+temporary or <a class="reference external" href="https://dvc.org/doc/user-guide/experiment-management/running-experiments#the-experiments-queue">queued experiments</a>.</p></li>
+</ul>
+</section>
+<section id="dvc-pre-commit-hooks">
+<h3>DVC pre-commit hooks<a class="headerlink" href="#dvc-pre-commit-hooks" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">initialize</span></code> installs several DVC pre-commit hooks to simplify your DVC+git workflow.</p>
+<ul class="simple">
+<li><p>The post-checkout hook executes <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">checkout</span></code> after git checkout to automatically update the workspace with the correct data file versions.</p></li>
+<li><p>The pre-commit hook executes <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">status</span></code> before git commit to inform the user about the differences between cache and workspace.</p></li>
+<li><p>The pre-push hook executes <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">push</span></code> before git push to upload files and directories tracked by DVC to the dvc remote default.</p></li>
+</ul>
+</section>
+</section>
+<section id="poetry-how-to">
+<h2>Poetry How To…<a class="headerlink" href="#poetry-how-to" title="Permalink to this heading"></a></h2>
+<section id="add-software-dependencies-to-the-project">
+<h3>Add software dependencies to the project<a class="headerlink" href="#add-software-dependencies-to-the-project" title="Permalink to this heading"></a></h3>
+<p>The <a class="reference external" href="https://python-poetry.org/docs/cli/#add"><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">add</span></code></a> command adds required packages to your pyproject.toml and installs them.  This updates <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>, which should both be committed to the git repository.</p>
+<p>If you do not specify a version constraint, poetry will choose a suitable one based on the available package versions.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>poetry<span class="w"> </span>add<span class="w"> </span>requests<span class="w"> </span>pendulum
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Allow &gt;=2.0.5, &lt;3.0.0 versions</span>
+poetry<span class="w"> </span>add<span class="w"> </span>pendulum@^2.0.5
+
+<span class="c1"># Allow &gt;=2.0.5, &lt;2.1.0 versions</span>
+poetry<span class="w"> </span>add<span class="w"> </span>pendulum@~2.0.5
+
+<span class="c1"># Allow &gt;=2.0.5 versions, without upper bound</span>
+poetry<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;pendulum&gt;=2.0.5&quot;</span>
+
+<span class="c1"># Allow only 2.0.5 version</span>
+poetry<span class="w"> </span>add<span class="w"> </span><span class="nv">pendulum</span><span class="o">==</span><span class="m">2</span>.0.5
+</pre></div>
+</div>
+</section>
+</section>
+<section id="documentation-how-to">
+<h2>Documentation How To…<a class="headerlink" href="#documentation-how-to" title="Permalink to this heading"></a></h2>
+<section id="build-the-docs">
+<h3>Build the docs<a class="headerlink" href="#build-the-docs" title="Permalink to this heading"></a></h3>
+<p>Just run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>make<span class="w"> </span>docs
+</pre></div>
+</div>
+<p>from the project root and the documentation website will be generated in <code class="docutils literal notranslate"><span class="pre">docs/_build/html</span></code>.</p>
+</section>
+<section id="use-advanced-markup-supported-by-myst-parser">
+<h3>Use advanced markup supported by MyST Parser<a class="headerlink" href="#use-advanced-markup-supported-by-myst-parser" title="Permalink to this heading"></a></h3>
+<p>This project uses <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a> combined with the
+<a class="reference external" href="https://myst-parser.readtheocs.io/en/latest/faq/index.html">MyST Parser Plugin</a> to enable
+you to write documentation in markdown, but retain many of the powerful features Restructured Text (rst) format.</p>
+<p>Check out the MyST plugin <a class="reference external" href="https://myst-parser.readtheocs.io/en/latest/faq/index.html">documentation</a> for an overview of everything that’s possible.</p>
+<section id="admonitions">
+<h4>Admonitions<a class="headerlink" href="#admonitions" title="Permalink to this heading"></a></h4>
+<p>You can create admonitions</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:::{</span><span class="n">tip</span><span class="p">}</span>
+<span class="n">Let</span><span class="s1">&#39;s give readers a helpful hint!</span>
+<span class="p">:::</span>
+</pre></div>
+</div>
+<p>produces</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Let’s give readers a helpful hint!</p>
+</div>
+</section>
+<section id="equations">
+<h4>Equations<a class="headerlink" href="#equations" title="Permalink to this heading"></a></h4>
+<p>You can add equations in LaTex</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:::{</span><span class="n">math</span><span class="p">}</span>
+<span class="p">:</span><span class="n">label</span><span class="p">:</span> <span class="n">mymath</span>
+<span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span> <span class="o">&amp;=&amp;</span> <span class="n">a</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="n">ab</span> <span class="o">+</span> <span class="n">b</span><span class="o">^</span><span class="mi">2</span> \\
+          <span class="o">&amp;=&amp;</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">:::</span>
+</pre></div>
+</div>
+<p>produces</p>
+<div class="math notranslate nohighlight" id="equation-mymath">
+<span class="eqno">(1)<a class="headerlink" href="#equation-mymath" title="Permalink to this equation"></a></span>\[\begin{split}(a + b)^2 &amp;=&amp; a^2 + 2ab + b^2 \\
+          &amp;=&amp; (a + b)(a + b)\end{split}\]</div>
+<p>You can reference them too!</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Equation {eq}`mymath` is a quadratic equation.
+</pre></div>
+</div>
+<p>produces</p>
+<p>Equation <a class="reference internal" href="#equation-mymath">(1)</a> is a quadratic equation.</p>
+</section>
+<section id="footnotes">
+<h4>Footnotes<a class="headerlink" href="#footnotes" title="Permalink to this heading"></a></h4>
+<p>You can also make footnotes</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Look</span> <span class="n">at</span> <span class="n">this</span> <span class="n">footnote</span> <span class="p">[</span><span class="o">^</span><span class="n">example</span><span class="o">-</span><span class="n">footnote</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">^</span><span class="n">example</span><span class="o">-</span><span class="n">footnote</span><span class="p">]:</span> <span class="n">This</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">footnote</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>produces</p>
+<p>Look at this footnote <a class="footnote-reference brackets" href="#example-footnote" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a></p>
+</section>
+</section>
+<section id="serve-the-documentation-website">
+<h3>Serve the documentation website<a class="headerlink" href="#serve-the-documentation-website" title="Permalink to this heading"></a></h3>
+<p>To build and share the documentation website:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">docs</span></code> builds the project documentation to <code class="docutils literal notranslate"><span class="pre">docs/_build/html</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">start-doc-server</span></code> runs an http server for the documentation website.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">stop-doc-server</span></code> stops a running http server.</p></li>
+</ul>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="bloat" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This prevents bloating your repo with temporary commits and branches.</p>
+</aside>
+<aside class="footnote brackets" id="very-useful-when" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>This is useful when you include source files as DVC dependencies, which is recommended to ensure that DVC will recalculate stage outputs when the calculation logic is changed.  However, it can be inconvenient to recalculate a whole stage just because you reformatted a line or two (I’m looking at you <code class="docutils literal notranslate"><span class="pre">isort</span></code>…).  <code class="docutils literal notranslate"><span class="pre">dvc</span> <span class="pre">commit</span> <span class="pre">&lt;stage&gt;</span></code> tells DVC to ignore the change to the stage and associate the current version of the code with the already-calculated output.</p>
+</aside>
+<aside class="footnote brackets" id="example-footnote" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>This is a footnote.</p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alex Hasha.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>  
+
+    <style>
+        /* Sidebar header (and topbar for mobile) */
+        .wy-side-nav-search, .wy-nav-top {
+            background: #2d4059
+        }
+        .wy-nav-content {
+            max-width: 1500px !important;
+        }
+        /* Sidebar */
+        .wy-nav-side {
+            background: #3e587b;
+        }
+    </style>
+
+
+</body>
+</html>

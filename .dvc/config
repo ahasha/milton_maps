@@ -1,5 +1,0 @@
-[core]
-    autostage = true
-    remote = miltonmaps
-['remote "miltonmaps"']
-    url = gdrive://1IslFS6M7hzADCBSUS0TfB_SRaRr_l48C

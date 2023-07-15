@@ -1,0 +1,10 @@
+milton\_maps.data package
+=========================
+
+Module contents
+---------------
+
+.. automodule:: milton_maps.data
+   :members:
+   :undoc-members:
+   :show-inheritance:
