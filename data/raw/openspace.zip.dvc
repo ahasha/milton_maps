@@ -1,0 +1,11 @@
+md5: eed7538709bacd7cd3a59f2b61622c7f
+frozen: true
+deps:
+- checksum: '"f1d788c8ddfc602ba403cfae4de3d019-9"'
+  size: 72770853
+  path: 
+    https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/openspace.zip
+outs:
+- md5: 9bb51a25c3490d8ca0ee8034df30c043
+  size: 72770853
+  path: openspace.zip

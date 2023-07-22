@@ -1,0 +1,11 @@
+md5: 8a43cf1985ea62b286e739b23cf31a7f
+frozen: true
+deps:
+- checksum: '"14e2c1a20d2b4bc5d36f379abc497a88-3"'
+  size: 19545709
+  path: 
+    https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/townssurvey_shp.zip
+outs:
+- md5: 81ff4e961d12a14341d7e6b6efef4d65
+  size: 19545709
+  path: townssurvey_shp.zip

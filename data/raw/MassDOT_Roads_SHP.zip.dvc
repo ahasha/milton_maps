@@ -1,0 +1,11 @@
+md5: 42cc92d44e55b09c6911ac50878db5bf
+frozen: true
+deps:
+- checksum: '"b45e62251bcc4b37f49e6f439f68de71-10"'
+  size: 80084382
+  path: 
+    https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/MassDOT_Roads_SHP.zip
+outs:
+- md5: fbf74e2b6f2cf3df0dff308937869be8
+  size: 80084382
+  path: MassDOT_Roads_SHP.zip

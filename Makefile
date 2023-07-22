@@ -121,52 +121,20 @@ export PRINT_HELP_PYSCRIPT
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
-clean-raw-data:
-	rm -rf data/raw/openspace
-	rm -rf data/raw/L3_SHP_M189_MILTON
-	rm -rf data/raw/M189_parcels_gdb
-	rm -rf data/raw/L3_SHP_M243_QUINCY
-	rm -rf data/raw/M243_parcels_gdb
 
-clean-processed-data:
-	rm -f data/processed/*.pkl
-	rm -f data/processed/*.zip
-	rm -f data/processed/*.json
+refresh-raw-data: refresh-openspace-data refresh-propertytax-data refresh-municipal-boundary-data refresh-massdot-road-data ## Refresh all raw data
 
-clean-data: clean-raw-data clean-processed-data
+refresh-openspace-data: check_poetry ## Refresh openspace data from MassGIS
+	$(POETRY_RUN) dvc update data/raw/openspace.zip.dvc
 
-refresh-openspace-data:
-	rm -rf data/raw/openspace
-	curl -o data/raw/openspace.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/openspace.zip
-	unzip data/raw/openspace.zip -d data/raw/openspace
-	rm data/raw/openspace.zip
+refresh-propertytax-data: check_poetry ## Refresh property tax data from MassGIS
+	$(POETRY_RUN) dvc update data/raw/L3_SHP_M189_MILTON.zip.dvc; \
+	$(POETRY_RUN) dvc update data/raw/L3_SHP_M243_QUINCY.zip.dvc; \
+	$(POETRY_RUN) dvc update data/raw/M189_parcels_gdb.zip.dvc; \
+	$(POETRY_RUN) dvc update data/raw/M243_parcels_gdb.zip.dvc;
 
-refresh-propertytax-data:
-	rm -rf data/raw/L3_SHP_M189_MILTON
-	rm -rf data/raw/M189_parcels_gdb
-	rm -rf data/raw/L3_SHP_M243_QUINCY
-	rm -rf data/raw/M243_parcels_gdb
-	curl -o data/raw/L3_SHP_M189_MILTON.zip http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M189_MILTON.zip
-	curl -o data/raw/L3_SHP_M243_QUINCY.zip http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M243_QUINCY.zip
-	curl -o data/raw/M189_parcels_gdb.zip http://download.massgis.digital.mass.gov/gdbs/l3parcels/M189_parcels_gdb.zip
-	curl -o data/raw/M243_parcels_gdb.zip http://download.massgis.digital.mass.gov/gdbs/l3parcels/M243_parcels_gdb.zip
-	unzip data/raw/L3_SHP_M189_MILTON.zip -d data/raw/L3_SHP_M189_MILTON
-	unzip data/raw/M189_parcels_gdb.zip -d data/raw/M189_parcels_gdb
-	unzip data/raw/L3_SHP_M243_QUINCY.zip -d data/raw/L3_SHP_M243_QUINCY
-	unzip data/raw/M243_parcels_gdb.zip -d data/raw/M243_parcels_gdb
-	rm data/raw/L3_SHP_M189_MILTON.zip
-	rm data/raw/M189_parcels_gdb.zip
-	rm data/raw/L3_SHP_M243_QUINCY.zip
-	rm data/raw/M243_parcels_gdb.zip
+refresh-municipal-boundary-data: check_poetry ## Refresh municipal boundary data from MassGIS
+	$(POETRY_RUN) dvc update data/raw/townssurvey_shp.zip.dvc
 
-refresh-municipal-boundary-data:
-	rm -rf data/raw/townssurvey_shp
-	curl -o data/raw/townssurvey_shp.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/townssurvey_shp.zip
-	unzip data/raw/townssurvey_shp.zip -d data/raw/townssurvey_shp
-	rm data/raw/townssurvey_shp.zip
-
-refresh-massdot-road-data:
-	rm -rf data/raw/MassDOT_Roads_SHP
-	curl -o data/raw/MassDOT_Roads_SHP.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/MassDOT_Roads_SHP.zip
-	unzip data/raw/MassDOT_Roads_SHP.zip -d data/raw/MassDOT_Roads_SHP
-	rm data/raw/MassDOT_Roads_SHP.zip
+refresh-massdot-road-data: check_poetry ## Refresh MassDOT road data from MassGIS
+	$(POETRY_RUN) dvc update data/raw/MassDOT_Roads_SHP.zip.dvc

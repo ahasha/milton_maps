@@ -1,42 +1,90 @@
 stages:
+  openspace_parcels:
+    cmd: unzip data/raw/openspace.zip -d data/raw/openspace
+    deps:
+    - data/raw/openspace.zip
+    outs:
+    - data/raw/openspace/
+  municipal_boundary_data:
+    cmd: unzip data/raw/townssurvey_shp.zip -d data/raw/townssurvey_shp
+    deps:
+    - data/raw/townssurvey_shp.zip
+    outs:
+    - data/raw/townssurvey_shp/
+  massdot_road_data:
+    cmd: unzip data/raw/MassDOT_Roads_SHP.zip -d data/raw/MassDOT_Roads_SHP
+    deps:
+    - data/raw/MassDOT_Roads_SHP.zip
+    outs:
+    - data/raw/MassDOT_Roads_SHP/
+  milton_tax_parcels:
+    cmd: unzip data/raw/L3_SHP_M189_MILTON.zip -d data/raw/L3_SHP_M189_MILTON
+    deps:
+    - data/raw/L3_SHP_M189_MILTON.zip
+    outs:
+    - data/raw/L3_SHP_M189_MILTON/
+  quincy_tax_parcels:
+    cmd: unzip data/raw/L3_SHP_M243_QUINCY.zip -d data/raw/L3_SHP_M243_QUINCY
+    deps:
+    - data/raw/L3_SHP_M243_QUINCY.zip
+    outs:
+    - data/raw/L3_SHP_M243_QUINCY/
+  milton_assessor_db:
+    cmd: unzip data/raw/M189_parcels_gdb.zip -d data/raw/M189_parcels_gdb
+    deps:
+    - data/raw/M189_parcels_gdb.zip
+    outs:
+    - data/raw/M189_parcels_gdb/
+  quincy_assessor_db:
+    cmd: unzip data/raw/M243_parcels_gdb.zip -d data/raw/M243_parcels_gdb
+    deps:
+    - data/raw/M243_parcels_gdb.zip
+    outs:
+    - data/raw/M243_parcels_gdb/
   process_town_boundaries:
-    cmd: milton_maps process_town_boundaries data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp data/processed/town_boundaries.shp.zip
+    cmd: milton_maps process_town_boundaries data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
+      data/processed/town_boundaries.shp.zip
     deps:
-      - milton_maps/process_town_boundaries.py
-      - data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
+    - milton_maps/process_town_boundaries.py
+    - data/raw/townssurvey_shp/TOWNSSURVEY_POLY.shp
     outs:
-      - data/processed/town_boundaries.shp.zip
-      - data/processed/town_ids.json
+    - data/processed/town_boundaries.shp.zip
+    - data/processed/town_ids.json
   process_milton_assessor_db:
-    cmd: milton_maps process_assessor_db data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb M189Assess data/processed/milton_assessor_db.pkl
+    cmd: milton_maps process_assessor_db data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
+      M189Assess data/processed/milton_assessor_db.pkl
     deps:
-      - milton_maps/process_assessor_db.py
-      - data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
-      - data/processed/town_ids.json
+    - milton_maps/process_assessor_db.py
+    - data/raw/M189_parcels_gdb/M189_parcels_CY22_FY22_sde.gdb
+    - data/processed/town_ids.json
     outs:
-      - data/processed/milton_assessor_db.pkl
+    - data/processed/milton_assessor_db.pkl
   process_quincy_assessor_db:
-    cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb M243Assess data/processed/quincy_assessor_db.pkl
+    cmd: milton_maps process_assessor_db data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
+      M243Assess data/processed/quincy_assessor_db.pkl
     deps:
-      - milton_maps/process_assessor_db.py
-      - data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
-      - data/processed/town_ids.json
+    - milton_maps/process_assessor_db.py
+    - data/raw/M243_parcels_gdb/M243_parcels_CY22_FY22_sde.gdb
+    - data/processed/town_ids.json
     outs:
-      - data/processed/quincy_assessor_db.pkl
+    - data/processed/quincy_assessor_db.pkl
   process_openspace:
     cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.shp.zip
     deps:
-      - milton_maps/process_openspace.py
-      - data/raw/openspace/OPENSPACE_POLY.shp
+    - milton_maps/process_openspace.py
+    - data/raw/openspace/OPENSPACE_POLY.shp
     outs:
-      - data/processed/openspace.shp.zip
+    - data/processed/openspace.shp.zip
   process_tax_parcels:
-    cmd: milton_maps process_tax_parcels data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp data/processed/milton_assessor_db.pkl,data/processed/quincy_assessor_db.pkl data/processed/residential_tax_parcels.pkl
+    cmd: milton_maps process_tax_parcels
+      data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
+      data/processed/milton_assessor_db.pkl,data/processed/quincy_assessor_db.pkl
+      data/processed/residential_tax_parcels.pkl
     deps:
-      - milton_maps/process_tax_parcels.py
-      - data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp
-      - data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
-      - data/processed/milton_assessor_db.pkl
-      - data/processed/quincy_assessor_db.pkl
+    - milton_maps/process_tax_parcels.py
+    - data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp
+    - data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
+    - data/processed/milton_assessor_db.pkl
+    - data/processed/quincy_assessor_db.pkl
     outs:
-      - data/processed/residential_tax_parcels.pkl
+    - data/processed/residential_tax_parcels.pkl
