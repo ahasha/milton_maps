@@ -1,0 +1,11 @@
+md5: 681fe1b0019983aa55e8bd5419628ba4
+frozen: true
+deps:
+- checksum: '"749059b94a0961cfb9200b1c475c5af7-2"'
+  size: 8689759
+  path: 
+    http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M243_QUINCY.zip
+outs:
+- md5: a09a37e6b3306542ae5ea741f389696c
+  size: 8689759
+  path: L3_SHP_M243_QUINCY.zip

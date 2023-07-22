@@ -57,15 +57,15 @@ stages:
     cmd: milton_maps process_openspace data/raw/openspace/OPENSPACE_POLY.shp data/processed/openspace.shp.zip
     deps:
     - path: data/raw/openspace/OPENSPACE_POLY.shp
-      md5: 1c7a6bd1e839d56935931f09cae6ad92
-      size: 58151620
+      md5: 6abfa1fb643e4187a3e5ad6acc774a55
+      size: 58998000
     - path: milton_maps/process_openspace.py
       md5: 65fdee0742d42616616e0a6ddccfa14f
       size: 1457
     outs:
     - path: data/processed/openspace.shp.zip
-      md5: 0116eb5aa457bea339c38f99209f1c94
-      size: 40425372
+      md5: 0b861cfe5c6dd5857dda827c3e71df4f
+      size: 41051775
   process_tax_parcels:
     cmd: milton_maps process_tax_parcels 
       data/raw/L3_SHP_M189_MILTON/L3_SHP_M189_Milton/M189TaxPar_CY22_FY22.shp,data/raw/L3_SHP_M243_QUINCY/L3_SHP_M243_Quincy/M243TaxPar_CY22_FY23.shp
@@ -91,3 +91,99 @@ stages:
     - path: data/processed/residential_tax_parcels.pkl
       md5: 195b1f96c99a0e0a3e3df747dd00db1d
       size: 17540927
+  download_openspace_parcels:
+    cmd: "curl -o data/raw/openspace.zip https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/shapefiles/state/openspace.zip\n
+      unzip data/raw/openspace.zip -d data/raw/openspace\nrm data/raw/openspace.zip\n"
+    outs:
+    - path: data/raw/openspace/
+      md5: f9256d409278f0ac193c36e683724b5a.dir
+      size: 274612603
+      nfiles: 26
+  municipal_boundary_data:
+    cmd: unzip data/raw/townssurvey_shp.zip -d data/raw/townssurvey_shp
+    deps:
+    - path: data/raw/townssurvey_shp.zip
+      md5: 81ff4e961d12a14341d7e6b6efef4d65
+      size: 19545709
+    outs:
+    - path: data/raw/townssurvey_shp/
+      md5: 93588614399a3793c637623d408d16a5.dir
+      size: 43170710
+      nfiles: 54
+  milton_assessor_db:
+    cmd: unzip data/raw/M189_parcels_gdb.zip -d data/raw/M189_parcels_gdb
+    deps:
+    - path: data/raw/M189_parcels_gdb.zip
+      md5: af39d1177763fbe727af3ce00edb261c
+      size: 3358435
+    outs:
+    - path: data/raw/M189_parcels_gdb/
+      md5: 246393e42aa0514f3a1b45b9fa383cc5.dir
+      size: 11770532
+      nfiles: 105
+  quincy_tax_parcels:
+    cmd: unzip data/raw/L3_SHP_M243_QUINCY.zip -d data/raw/L3_SHP_M243_QUINCY
+    deps:
+    - path: data/raw/L3_SHP_M243_QUINCY.zip
+      md5: a09a37e6b3306542ae5ea741f389696c
+      size: 8689759
+    outs:
+    - path: data/raw/L3_SHP_M243_QUINCY/
+      md5: 4d75fcd0777f4cf9e772f545b62da7e0.dir
+      size: 38487140
+      nfiles: 34
+  quincy_assessor_db:
+    cmd: unzip data/raw/M243_parcels_gdb.zip -d data/raw/M243_parcels_gdb
+    deps:
+    - path: data/raw/M243_parcels_gdb.zip
+      md5: e0d4b45970f5243c624c9d1d48970173
+      size: 7985666
+    outs:
+    - path: data/raw/M243_parcels_gdb/
+      md5: 6d42e56fd4b1c9133a753abc0cbf5538.dir
+      size: 28913098
+      nfiles: 98
+  milton_tax_parcels:
+    cmd: unzip data/raw/L3_SHP_M189_MILTON.zip -d data/raw/L3_SHP_M189_MILTON
+    deps:
+    - path: data/raw/L3_SHP_M189_MILTON.zip
+      md5: 73d9901da76ad7f65c79efc9c025eb11
+      size: 3388818
+    outs:
+    - path: data/raw/L3_SHP_M189_MILTON/
+      md5: 3944bafa37a60348023e255af5a827b0.dir
+      size: 13496531
+      nfiles: 34
+  massdot_road_data:
+    cmd: unzip data/raw/MassDOT_Roads_SHP.zip -d data/raw/MassDOT_Roads_SHP
+    deps:
+    - path: data/raw/MassDOT_Roads_SHP.zip
+      md5: fbf74e2b6f2cf3df0dff308937869be8
+      size: 80084382
+    outs:
+    - path: data/raw/MassDOT_Roads_SHP/
+      md5: f39a65078fdd85fa90fa3300f4d2dbe3.dir
+      size: 660710998
+      nfiles: 29
+  unzip_openspace_parcels:
+    cmd: unzip data/raw/openspace.zip -d data/raw/openspace
+    deps:
+    - path: data/raw/openspace.zip
+      md5: 9bb51a25c3490d8ca0ee8034df30c043
+      size: 72770853
+    outs:
+    - path: data/raw/openspace/
+      md5: b950d9b6f04a36fce2fa6cbf80ff4f1f.dir
+      size: 276130849
+      nfiles: 26
+  openspace_parcels:
+    cmd: unzip data/raw/openspace.zip -d data/raw/openspace
+    deps:
+    - path: data/raw/openspace.zip
+      md5: 9bb51a25c3490d8ca0ee8034df30c043
+      size: 72770853
+    outs:
+    - path: data/raw/openspace/
+      md5: b950d9b6f04a36fce2fa6cbf80ff4f1f.dir
+      size: 276130849
+      nfiles: 26

@@ -1,0 +1,10 @@
+md5: fd2bdde4940d32ea4c8d85b6beaed677
+frozen: true
+deps:
+- checksum: '"af39d1177763fbe727af3ce00edb261c"'
+  size: 3358435
+  path: http://download.massgis.digital.mass.gov/gdbs/l3parcels/M189_parcels_gdb.zip
+outs:
+- md5: af39d1177763fbe727af3ce00edb261c
+  size: 3358435
+  path: M189_parcels_gdb.zip

@@ -1,0 +1,11 @@
+md5: c86350922335b161cc4906892166daa5
+frozen: true
+deps:
+- checksum: '"73d9901da76ad7f65c79efc9c025eb11"'
+  size: 3388818
+  path: 
+    http://download.massgis.digital.mass.gov/shapefiles/l3parcels/L3_SHP_M189_MILTON.zip
+outs:
+- md5: 73d9901da76ad7f65c79efc9c025eb11
+  size: 3388818
+  path: L3_SHP_M189_MILTON.zip
