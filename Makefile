@@ -18,7 +18,7 @@ check_poetry:
 	@if [ -z $(POETRY) ]; then echo "Poetry could not be found. See https://python-poetry.rg/docs/ for installation instructions"; exit 2; fi
 	@echo $(POETRY)
 
-poetry.lock: pyproject.toml check_poetry ## Once per new project, update poetry.lock to align with pyproject.toml
+poetry.lock: pyproject.toml
 	$(POETRY) lock --no-update
 
 .PHONY: environment
