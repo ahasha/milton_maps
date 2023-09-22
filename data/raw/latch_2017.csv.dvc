@@ -1,0 +1,9 @@
+md5: efa6ed6fbef7d92acf9334a4e6548804
+frozen: true
+deps:
+- checksum: '122302010017181158927456442352309338004'
+  path: https://www.bts.gov/sites/bts.dot.gov/files/nhts2017/latch_2017-b.csv
+outs:
+- md5: 02587e59f2c0b8a4f2a52c3b67594cfe
+  size: 46659775
+  path: latch_2017.csv

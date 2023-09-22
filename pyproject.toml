@@ -35,6 +35,7 @@ pandoc = "^2.3"
 folium = "^0.14.0"
 seaborn = "^0.12.2"
 pygeos = "^0.14"
+censusdata = "^1.15.post1"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^6.1.3"

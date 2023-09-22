@@ -1,0 +1,10 @@
+md5: 98869d5e3344eda8dc6e72dedc117311
+frozen: true
+deps:
+- checksum: '194424231177639027931973960583229215678'
+  size: 21319
+  path: https://www.bts.gov/sites/bts.dot.gov/files/2023-01/AppendixD_LATCH2017r.xlsx
+outs:
+- md5: ba0a7066647a7c915e1bf37b601065c0
+  size: 21319
+  path: latch_data_dictionary.xlsx
