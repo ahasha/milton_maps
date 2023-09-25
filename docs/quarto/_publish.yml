@@ -1,0 +1,4 @@
+- source: randolph_avenue_crashes.qmd
+  netlify:
+    - id: f8c59a80-7da0-4e73-a44c-6591c672ca7a
+      url: 'https://statuesque-chimera-a7b396.netlify.app'

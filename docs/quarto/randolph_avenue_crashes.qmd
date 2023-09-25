@@ -1,0 +1,272 @@
+---
+title: Crashes on Randolph Avenue
+format:
+  html:
+    code-fold: true
+    page-layout: article
+warning: false
+jupyter: python3
+---
+
+Milton residents commonly refer to the stretch of Randolph Avenue between Reedsdale Road and Chickatawbutt Road as "suicide alley".  It's a segment of State Route 28 with high-traffic volumes and topography that encourages speeding and makes traffic calming measures difficult.
+
+The intersection of Randolph Avenue and Chickatawbutt Road is particularly infamous as one of the most dangerous intersections in the state of Massachusetts.  MassDOT currently plans to build a rotary at the intersection to improve safety and traffic flow.  The [MassDOT website](https://www.mass.gov/randolph-ave-rt-28chickatawbut-intersection-improvement-project) for the roundabout project describes their rationale for this approach as follows.
+
+> The project will make roadway and intersection improvements to enhance safety. Under the Safety Improvements Program, this proposed project is currently in the design phase. This intersection ranked 7th out of 200 in the latest listing of most dangerous intersections in the state. From 2014 to 2016 there were 54 crashes at this intersection. Of those 54, 28 involved a fatality or injury. A 2016 Road Safety Audit (RSA) identified problems in the intersection and recommended changes to reduce crashes. The RSA, and analysis of alternatives, has led to the proposed solution of a roundabout.
+
+Local residents, myself include, are concerned that a roundabout could worsen safety conditions upstream of Chickatawbutt Road in Milton by eliminating gaps in traffic that allow residents on side streets to enter and exit their neighborhoods safely.  While I am not a traffic engineer and have no reason to doubt their assessment that a roundabout would improve safety at the intersection, it was clear from public meeting presentations that MassDOT's safety analysis ignored accidents upstream of the intersection.  This approach seemed driven by the organizational structure of MassDOT rather than prioritizing a holistic approach to safety.  Our intuition as residents living along this road is that the segment of Randolph Avenue upstream of the intersection is also extremely dangerous.  I wanted to examine data to determine whether this is true.
+
+
+## MassDOT crash data
+
+```{python}
+import milton_maps as mm
+from milton_maps.process_crash_data import get_crash_data, get_randolph_ave_shape
+import pandas as pd
+import folium
+from IPython.display import HTML
+import geopandas as gpd
+from shapely.geometry import Point
+import matplotlib.pyplot as plt
+import contextily as ctx
+import milton_maps as mm
+import seaborn as sns
+import logging
+
+logger = logging.getLogger(__name__)
+
+crash_geodf = get_crash_data()
+```
+
+I obtained Milton crash data for Milton, MA from the Department of Transportation (MassDOT)
+[IMPACT Portal](https://apps.impact.dot.state.ma.us/cdp/home) using the [Data Extraction](https://apps.impact.dot.state.ma.us/cdp/extract) tool.
+
+The crash data covers the years `{python} crash_geodf['year'].min()` to
+`{python} crash_geodf['year'].max()`, though I am not certain whether
+this dataset is a complete record of all crashes during that time period.
+
+A crash data report for Milton, MA was requested from the Department of Transportation (MassDOT)
+[IMPACT Portal](https://apps.impact.dot.state.ma.us/cdp/home) using the [Data Extraction](https://apps.impact.dot.state.ma.us/cdp/extract) tool.  Crash data for the years 2016-2023 in Milton, MA were requested via the web page, and a personalized download link was emailed shortly thereafter.
+
+::: {.callout-caution collapse="true"}
+## MassDOT Data Disclaimers
+
+The data is provided with the following disclaimers.
+
+> MassDOT makes no representation as to the accuracy, adequacy, reliability, availability or completeness of the crash records or the data collected from them and is not responsible for any errors or omissions in such records or data. Under no circumstance will MassDOT have any liability for any loss or damage incurred by any party as a result of the use of the crash records or the data collected from them. Furthermore, the data contained in the web-based cras report tool are not an official record of what transpired in a particular crash or for a particular crash type. If a user is interested in an official copy of a crash report, contact the
+
+> Registry (http://www.mass.gov/rmv/).
+
+> The City of Boston Police Department may be contacted directly for official copies of crash reports and for crash data pertaining to the City of Boston. In addition, any crash records or data provided for the years 2020 and later are subject to change at any time and are not to be considered up-to-date or complete. As such, open years’ of crash data are for informational purposes only and should not be used for analysis.
+
+> The data posted on this website, including crash records and other reports, are collected for the purpose of identifying, evaluating or planning the safety enhancement of potential crash sites, hazardous roadway conditions or railway-highway crossings. Under federal law, this
+information is not subject to discovery and cannot be admitted into evidence in any federal or state court proceeding or considered for other purposes in any action for damages that involves the sites mentioned in these records (see 23 USC, Section 409).
+:::
+
+
+Here is a map of the `{python} crash_geodf.shape[0]` crashes in Milton reported
+in the dataset, colored by severity.
+
+```{python}
+fig, ax = plt.subplots(1, figsize=(8,8))
+# Tighten the bounding box around the data locations
+ax = mm.plot_map(crash_geodf,
+                 column="severity",
+                 categorical=True,
+                 markersize=30,
+                 alpha=0.75,
+                 ax=ax,
+                 )
+ax.get_legend().set_bbox_to_anchor((.75, 0.5))
+ctx.add_basemap(ax, crs="EPSG:26986")
+```
+
+I have filtered the crash data to those that occur
+along Randolph Avenue from Chickatawbutt road to Reedsdale road , and labeled those that occur at the intersection versus those that happened upstream.  Here they are color coded to verify the filtering logic worked as intended.
+
+```{python}
+randolph_ave = get_randolph_ave_shape()
+
+# Filter crash points to those within 20 meters of randolph avenue
+randolph_ave_buffer = randolph_ave.buffer(20)
+# Crash points inside the randolph_ave_buffer
+randolph_ave_crashes = gpd.clip(crash_geodf, randolph_ave_buffer)
+
+# Create a polygon buffer of 30 meters around the latitude longitude (42.224225, -71.070639), which is the Chickatawbutt/Randolph intersection.
+# in the same CRS as the crash data.
+chickatawbut_randolph_intersection = gpd.GeoSeries(
+    Point(-71.070639, 42.224225), crs="EPSG:4326" # Latitude/Longitude CRS
+    ).to_crs("EPSG:26986"  # This CRS measures units in meters
+              ).buffer(30)
+
+intersection_crashes = gpd.clip(crash_geodf, chickatawbut_randolph_intersection)
+logger.info(f"Intersection crashes shape: {intersection_crashes.shape}")
+
+upstream_crashes = randolph_ave_crashes.loc[
+    ~randolph_ave_crashes.index.isin(intersection_crashes.index), :]
+logger.info(f"Upstream crashes shape: {upstream_crashes.shape}")
+
+intersection_crashes["where"] = "intersection"
+upstream_crashes["where"] = "upstream"
+randolph_ave_crashes = gpd.GeoDataFrame( pd.concat([intersection_crashes, upstream_crashes], ignore_index=True) )
+other_crashes = crash_geodf.loc[~crash_geodf.index.isin(randolph_ave_crashes.index), :]
+
+# Plot randolph crashses in red and non-randolph crashes in blue
+fig, ax = plt.subplots(1, figsize=(7,7))
+
+other_crashes.plot(
+    ax=ax,
+    color="blue",
+    markersize=10,
+)
+
+upstream_crashes.plot(
+    ax=ax,
+    color="yellow",
+    markersize=30,
+)
+
+intersection_crashes.plot(
+    ax=ax,
+    color="red",
+    markersize=30,
+)
+
+randolph_ave.plot(
+    ax=ax,
+    color="green",
+)
+
+ax.set_title("Milton crashes with Randolph Avenue crashes highlighted", fontsize=20)
+ctx.add_basemap(ax=ax, crs="EPSG:26986")
+plt.show()
+```
+
+```{python}
+intersection_crashes_2014_16 = intersection_crashes.loc[
+    (intersection_crashes.year >= 2014) &
+    (intersection_crashes.year <= 2016)]
+
+intersection_crashes_2014_16_injury = intersection_crashes_2014_16.loc[
+    intersection_crashes_2014_16.severity.isin(["Fatal Injury", "Major Injury", "Minor Injury"])
+]
+```
+
+In an attempt to validate the completeness of the data, I double-checked MassDOT's statistic about the number of crashes at the intersection from 2014 to 2016.  They reported 54 crashes, 28 involved a fatality or injury.  In the data I found `{python} intersection_crashes_2014_16.shape[0]` crashes at the intersection, with `{python} intersection_crashes_2014_16_injury.shape[0]` involving a fatality or injury.
+
+### How many crashes happen upstream vs at the intersection?
+
+The crash data shows that, every single year, there are more accidents overall on
+Randolph Avenue upstream of the Chickatawbutt Rd intersection than occur at the
+intersection, though Chickatawbutt Rd is clearly responsible for a high
+proportion of all accidents.
+
+```{python}
+# Plot all crashes, intersection vs upstream
+sns.set_theme(style="whitegrid")
+sns.set_palette(["#2d4059", "#ffd460"])
+ax = sns.countplot(x="year", hue="where", data=randolph_ave_crashes)
+ax.set_title("Crashes by year")
+ax.set_ylabel("Number of crashes")
+ax.set_xlabel("Year")
+# Rotate x axis labels 45 degrees
+plt.xticks(rotation=45)
+leg = ax.legend()
+leg.set_title("Crash Location")
+leg.set_bbox_to_anchor((1.02, .6))
+
+plt.show()
+```
+
+Even when we consider only serious crashes with a major injury or fatality, the upstream section is always equally if not more dangerous than the intersection.
+
+```{python}
+sns.set_theme(style="whitegrid")
+sns.set_palette(["#2d4059", "#ffd460"])
+_data = randolph_ave_crashes.loc[randolph_ave_crashes["severity"].isin(["Major Injury", "Fatal Injury"])]
+ax = sns.countplot(x="year", hue="where", data=_data)
+ax.set_title("Major Crashes by year")
+ax.set_ylabel("Number of crashes")
+ax.set_xlabel("Year")
+# Rotate x axis labels 45 degrees
+plt.xticks(rotation=45)
+leg = ax.legend()
+leg.set_title("Crash Location")
+leg.set_bbox_to_anchor((1.02, .6))
+
+plt.show()
+```
+
+```{python}
+fatal_accidents = randolph_ave_crashes.loc[
+    randolph_ave_crashes.severity == "Fatal Injury",
+    ["Crash_DateTime", "where", "Crash_Date", "Crash_Time", "Manner_of_Collision", "Number_of_Vehicles", "Vehicle_Travel_Directions", "Total_Fatal_Injuries", "Ambient_Light", "Weather_Condition"]
+].sort_values(by="Crash_DateTime", ascending=False).drop(columns=["Crash_DateTime"])
+```
+
+This table shows the conditions of each of the `{python} fatal_accidents.shape[0]` fatal accidents on Randolph:
+
+```{python}
+fatal_accidents
+```
+
+```{python}
+major_accidents = randolph_ave_crashes.loc[
+    randolph_ave_crashes.severity == "Major Injury",
+    ["Crash_DateTime", "where", "Crash_Date", "Crash_Time", "Manner_of_Collision", "Number_of_Vehicles", "Vehicle_Travel_Directions", "Total_Fatal_Injuries", "Ambient_Light", "Weather_Condition"]
+].sort_values(by="Crash_DateTime", ascending=False).drop(columns=["Crash_DateTime"])
+```
+
+And this table describes the conditions of the `{python} major_accidents.shape[0]` accidents with major injuries on Randolph:
+
+```{python}
+major_accidents
+```
+
+
+### Interactive Map
+
+This map lets you interactively explore all the crashes along this stretch of Randolph Avenue that resulted in injuries.  The markers are color-coded with fatal accidents as red, major injuries as yellow, and minor injuries in blue.  If you click on a marker, a popup will provide additional details about the accident.
+
+You can observe that the majority of fatal accidents on the road have happened near the Wollaston golf course and further north towards Reedsdale Rd.
+
+
+```{python}
+# Create an interactive Folium Map with the crash points plotted and a popup with the direction of travel, time of day, and severity of the crash.  Color the points by severity of the crash
+m = folium.Map(location=[42.224225, -71.070639], zoom_start=13)
+# Create a version of randolph_ave_crashes that uses a CRS in latitude and longitude
+randolph_ave_crashes_latlon = randolph_ave_crashes.to_crs("EPSG:4326")
+
+injury_crashes = randolph_ave_crashes_latlon.loc[
+    randolph_ave_crashes_latlon["severity"].isin(
+        ["Fatal Injury", "Major Injury", "Minor Injury"]), :]
+
+colormap = {
+    "Fatal Injury": "red",
+    "Major Injury": "yellow",
+    "Minor Injury": "blue",
+}
+
+def popup_text(row):
+    result = f"""
+    Direction of Travel: {row['Vehicle_Travel_Directions']}<br>
+    Year: {row['year']}<br>
+    Time of Day: {row['Crash_Time']}<br>
+    Severity: {row['severity']}<br>
+    """
+    return result
+
+for _, row in injury_crashes.sort_values(by="severity", ascending=False).iterrows():
+    popup_content = folium.Popup(popup_text(row), max_width=300)  # Adjust max_width as needed
+    folium.CircleMarker(
+        location=[row["geometry"].y, row["geometry"].x],
+        radius=5,
+        popup=popup_content,
+        color=colormap[row["severity"]],
+        fill=True,
+        fill_color="yellow",
+        fill_opacity=0.5,
+    ).add_to(m)
+
+display(m)
+```
